@@ -1,3 +1,88 @@
+# Flutter/Dart/Pub related
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+/build/
+**/doc/api/
+**/ios/Flutter/.last_build_id
+
+# Obfuscation related
+app.*.map.json
+
+# Symbolication related
+app.*.symbols
+
+# Android related
+**/android/app/debug
+**/android/app/profile
+**/android/app/release
+**/android/local.properties
+**/android/key.properties
+
+# iOS related
+**/ios/Flutter/App.framework
+**/ios/Flutter/Flutter.framework
+**/ios/Flutter/Flutter.podspec
+**/ios/Flutter/*.xcconfig
+**/ios/Flutter/Generated.xcconfig
+**/ios/.symlinks/
+**/ios/Pods/
+**/ios/Podfile.lock
+**/ios/Runner.xcworkspace
+**/ios/DerivedData/
+**/ios/.last_build_id
+
+# Xcode related
+*.xcworkspace
+*.xcuserstate
+*.xcuserdata
+*.xcodeproj/project.xcworkspace/
+*.xcodeproj/xcuserdata/
+
+# VS Code related
+.vscode/
+*.code-workspace
+
+# IntelliJ/Android Studio related
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# macOS related
+**/macos/Flutter/ephemeral/
+**/macos/Flutter/Flutter.podspec
+**/macos/Flutter/Generated.xcconfig
+**/macos/Pods/
+**/macos/Podfile.lock
+**/macos/Runner.xcworkspace
+**/macos/.symlinks/
+**/macos/DerivedData/
+**/macos/.last_build_id
+
+# Windows related
+**/windows/flutter/ephemeral/
+**/windows/CMakeLists.txt
+**/windows/flutter/generated_plugin_registrant.cc
+**/windows/flutter/generated_plugin_registrant.h
+
+# Linux related
+**/linux/flutter/ephemeral/
+**/linux/CMakeLists.txt
+**/linux/flutter/generated_plugin_registrant.cc
+**/linux/flutter/generated_plugin_registrant.h
+
+# Web related
+**/web/.dart_tool/
+**/web/.firebase/
+**/web/.flutter-plugins
+**/web/.flutter-plugins-dependencies
+**/web/.packages
+**/web/build/
+
 # Miscellaneous
 *.class
 *.log
@@ -12,34 +97,11 @@
 .swiftpm/
 migrate_working_dir/
 
-# IntelliJ related
-*.iml
-*.ipr
-*.iws
-.idea/
+# Firebase related
+**/android/google-services.json
+**/ios/Runner/GoogleService-Info.plist
+**/macos/Runner/GoogleService-Info.plist
 
-# The .vscode folder contains launch configuration and tasks you configure in
-# VS Code which you may wish to be included in version control, so this line
-# is commented out by default.
-#.vscode/
-
-# Flutter/Dart/Pub related
-**/doc/api/
-**/ios/Flutter/.last_build_id
-.dart_tool/
-.flutter-plugins
-.flutter-plugins-dependencies
-.pub-cache/
-.pub/
-/build/
-
-# Symbolication related
-app.*.symbols
-
-# Obfuscation related
-app.*.map.json
-
-# Android Studio will place build artifacts here
-/android/app/debug
-/android/app/profile
-/android/app/release
+# Generated localization files
+intl_translation.arb
+intl_messages.arb
