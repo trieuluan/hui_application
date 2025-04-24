@@ -1,6 +1,6 @@
 import 'package:go_router/go_router.dart';
-import 'package:hui_application/screens/auth/login_screen.dart';
-import 'package:hui_application/screens/auth/register_screen.dart';
+import 'package:hui_application/features/auth/screens/login_screen.dart';
+import 'package:hui_application/features/auth/screens/register_screen.dart';
 import 'package:hui_application/screens/home/home_screen.dart';
 import 'package:hui_application/screens/intro_screen.dart';
 // import 'package:hui_application/services/auth_manager.dart';
