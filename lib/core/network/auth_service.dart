@@ -20,6 +20,30 @@ class AuthService {
     }
   }
 
+  static Future<Map<String, dynamic>?> register({
+    required String emailOrPhone,
+    required String name,
+    required String password,
+    required String passwordConfirm,
+    required String email,
+  }) async {
+    try {
+      final response = await ApiClient.post(
+        Endpoints.register,
+        data: {
+          'emailOrPhone': emailOrPhone,
+          'fullName': name,
+          'password': password,
+          'retypePassword': passwordConfirm,
+          'email': email,
+        },
+      );
+      return response.data;
+    } on DioException catch (e) {
+      throw e.response?.data;
+    }
+  }
+
   static Future<bool> checkAvailability({required String emailOrPhone}) async {
     try {
       final response = await ApiClient.post(

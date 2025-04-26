@@ -17,23 +17,23 @@ class AuthManager {
     return false;
   }
 
+  static Future<Map<String, dynamic>?> register({
+    required String emailOrPhone,
+    required String name,
+    required String password,
+    required String passwordConfirm,
+    required String email,
+  }) async {
+    return await AuthService.register(
+      emailOrPhone: emailOrPhone,
+      name: name,
+      password: password,
+      passwordConfirm: passwordConfirm,
+      email: email,
+    );
+  }
+
   static Future<bool> checkAvailability(String emailOrPhone) async {
     return await AuthService.checkAvailability(emailOrPhone: emailOrPhone);
-  }
-
-  static Future<void> logout() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.remove(_tokenKey);
-    await AuthService.logout();
-  }
-
-  static Future<String?> getToken() async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getString(_tokenKey);
-  }
-
-  static Future<bool> isLoggedIn() async {
-    final token = await getToken();
-    return token != null && token.isNotEmpty;
   }
 }

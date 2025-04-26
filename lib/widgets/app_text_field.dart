@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class AppTextField extends StatefulWidget {
   final String label;
   final String? hintText;
-  final TextEditingController controller;
+  final TextEditingController? controller;
   final String? Function(String?)? validator;
   final TextInputType keyboardType;
   final bool obscureText;
@@ -18,7 +18,7 @@ class AppTextField extends StatefulWidget {
   const AppTextField({
     super.key,
     required this.label,
-    required this.controller,
+    this.controller,
     this.validator,
     this.keyboardType = TextInputType.text,
     this.obscureText = false,
@@ -58,7 +58,7 @@ class _AppTextFieldState extends State<AppTextField> {
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
         contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         errorText:
-            _showError ? widget.validator?.call(widget.controller.text) : null,
+            _showError ? widget.validator?.call(widget.controller!.text) : null,
       ),
       onChanged: (value) {
         if (!_showError) {

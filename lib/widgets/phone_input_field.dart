@@ -8,6 +8,7 @@ class PhoneInputField extends StatefulWidget {
   final TextEditingController? controller;
   final FocusNode? focusNode;
   final Future<String?> Function(PhoneNumber?)? validator;
+  final bool enabled;
 
   const PhoneInputField({
     super.key,
@@ -15,6 +16,7 @@ class PhoneInputField extends StatefulWidget {
     this.controller,
     this.focusNode,
     this.validator,
+    this.enabled = true,
   });
 
   @override
@@ -67,6 +69,7 @@ class PhoneInputFieldState extends State<PhoneInputField> {
     return IntlPhoneField(
       initialCountryCode: 'VN',
       controller: _internalController,
+      enabled: widget.enabled,
       focusNode: _internalFocusNode,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       disableLengthCheck: true,
@@ -74,6 +77,11 @@ class PhoneInputFieldState extends State<PhoneInputField> {
         labelText: 'Phone Number',
         border: const OutlineInputBorder(),
         errorText: _errorText,
+        contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        disabledBorder: OutlineInputBorder(
+          borderRadius: const BorderRadius.all(Radius.circular(8)),
+          borderSide: BorderSide(color: Colors.grey.shade300, width: 1.5),
+        ),
       ),
       onChanged: widget.onChanged,
       validator: validatePhone,

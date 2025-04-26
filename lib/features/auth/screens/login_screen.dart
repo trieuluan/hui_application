@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
-import 'package:hui_application/core/utils/app_text_field.dart';
+import 'package:hui_application/widgets/app_text_field.dart';
 import 'package:hui_application/core/utils/snackbar_util.dart';
-import 'package:hui_application/core/utils/validators.dart';
+import 'package:hui_application/core/validators/validators.dart';
 import 'package:hui_application/services/auth_manager.dart';
 import 'package:hui_application/widgets/phone_input_field.dart';
 import 'package:intl_phone_field/phone_number.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  ConsumerState<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState extends ConsumerState<LoginScreen> {
   final TextEditingController _inputController = TextEditingController();
   final FocusNode _focusNode = FocusNode();
   final FocusNode _phoneFocusNode = FocusNode();
@@ -30,9 +31,11 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     super.initState();
-    _inputController.addListener(_checkInputType);
+    _isPhone = true;
+    // _inputController.addListener(_checkInputType);
   }
 
+  // ignore: unused_element
   void _checkInputType() {
     final text = _inputController.text.trim();
     if (text == _previousText) return;
@@ -145,12 +148,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                     );
                                 if (avaliable) {
                                   context.push(
-                                    '/register',
-                                    extra: _emailOrPhone,
+                                    '/register?emailOrPhone=$_emailOrPhone',
                                   );
                                 }
                               } catch (e) {
-                                showGlobalErrorSnackBar(e.toString());
+                                showGlobalErrorSnackBar(message: e.toString());
                               }
                             }
                             : null,

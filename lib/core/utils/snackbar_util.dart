@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:hui_application/main.dart';
 
-void showGlobalErrorSnackBar(String message) {
+void showGlobalErrorSnackBar({
+  required String message,
+  Duration duration = const Duration(seconds: 3),
+}) {
   scaffoldMessengerKey.currentState!.clearSnackBars();
   scaffoldMessengerKey.currentState!.showSnackBar(
     SnackBar(
       content: Text(message),
       backgroundColor: Colors.red,
       behavior: SnackBarBehavior.floating,
-      duration: const Duration(seconds: 3),
+      duration: duration,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       margin: const EdgeInsets.all(16),
     ),

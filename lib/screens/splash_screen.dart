@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hui_application/features/auth/providers/auth_provider.dart';
 import 'package:hui_application/services/auth_manager.dart';
 import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class SplashScreen extends StatefulWidget {
+class SplashScreen extends ConsumerStatefulWidget {
   const SplashScreen({super.key});
 
   @override
-  State<SplashScreen> createState() => _SplashScreenState();
+  ConsumerState<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen>
+class _SplashScreenState extends ConsumerState<SplashScreen>
     with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
 
@@ -42,7 +44,7 @@ class _SplashScreenState extends State<SplashScreen>
       // Set the flag to false
       await prefs.setBool('isFirstTime', false);
     } else {
-      final isLoggedIn = await AuthManager.isLoggedIn();
+      final isLoggedIn = ref.watch(authProvider).isLoggedIn;
       if (!mounted) return;
       // Navigate to the main screen
       context.go(isLoggedIn ? '/home' : '/intro');

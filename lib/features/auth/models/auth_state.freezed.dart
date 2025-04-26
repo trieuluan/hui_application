@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$AuthState {
 
- String get emailOrPhone; bool get isLoggedIn; String get token;
+ String get emailOrPhone; bool get isLoggedIn; String get token; Map<String, dynamic> get user;
 /// Create a copy of AuthState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -26,16 +26,16 @@ $AuthStateCopyWith<AuthState> get copyWith => _$AuthStateCopyWithImpl<AuthState>
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AuthState&&(identical(other.emailOrPhone, emailOrPhone) || other.emailOrPhone == emailOrPhone)&&(identical(other.isLoggedIn, isLoggedIn) || other.isLoggedIn == isLoggedIn)&&(identical(other.token, token) || other.token == token));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AuthState&&(identical(other.emailOrPhone, emailOrPhone) || other.emailOrPhone == emailOrPhone)&&(identical(other.isLoggedIn, isLoggedIn) || other.isLoggedIn == isLoggedIn)&&(identical(other.token, token) || other.token == token)&&const DeepCollectionEquality().equals(other.user, user));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,emailOrPhone,isLoggedIn,token);
+int get hashCode => Object.hash(runtimeType,emailOrPhone,isLoggedIn,token,const DeepCollectionEquality().hash(user));
 
 @override
 String toString() {
-  return 'AuthState(emailOrPhone: $emailOrPhone, isLoggedIn: $isLoggedIn, token: $token)';
+  return 'AuthState(emailOrPhone: $emailOrPhone, isLoggedIn: $isLoggedIn, token: $token, user: $user)';
 }
 
 
@@ -46,7 +46,7 @@ abstract mixin class $AuthStateCopyWith<$Res>  {
   factory $AuthStateCopyWith(AuthState value, $Res Function(AuthState) _then) = _$AuthStateCopyWithImpl;
 @useResult
 $Res call({
- String emailOrPhone, bool isLoggedIn, String token
+ String emailOrPhone, bool isLoggedIn, String token, Map<String, dynamic> user
 });
 
 
@@ -63,12 +63,13 @@ class _$AuthStateCopyWithImpl<$Res>
 
 /// Create a copy of AuthState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? emailOrPhone = null,Object? isLoggedIn = null,Object? token = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? emailOrPhone = null,Object? isLoggedIn = null,Object? token = null,Object? user = null,}) {
   return _then(_self.copyWith(
 emailOrPhone: null == emailOrPhone ? _self.emailOrPhone : emailOrPhone // ignore: cast_nullable_to_non_nullable
 as String,isLoggedIn: null == isLoggedIn ? _self.isLoggedIn : isLoggedIn // ignore: cast_nullable_to_non_nullable
 as bool,token: null == token ? _self.token : token // ignore: cast_nullable_to_non_nullable
-as String,
+as String,user: null == user ? _self.user : user // ignore: cast_nullable_to_non_nullable
+as Map<String, dynamic>,
   ));
 }
 
@@ -79,12 +80,19 @@ as String,
 
 
 class _AuthState implements AuthState {
-  const _AuthState({this.emailOrPhone = '', this.isLoggedIn = false, this.token = ''});
+  const _AuthState({this.emailOrPhone = '', this.isLoggedIn = false, this.token = '', final  Map<String, dynamic> user = const {}}): _user = user;
   
 
 @override@JsonKey() final  String emailOrPhone;
 @override@JsonKey() final  bool isLoggedIn;
 @override@JsonKey() final  String token;
+ final  Map<String, dynamic> _user;
+@override@JsonKey() Map<String, dynamic> get user {
+  if (_user is EqualUnmodifiableMapView) return _user;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableMapView(_user);
+}
+
 
 /// Create a copy of AuthState
 /// with the given fields replaced by the non-null parameter values.
@@ -96,16 +104,16 @@ _$AuthStateCopyWith<_AuthState> get copyWith => __$AuthStateCopyWithImpl<_AuthSt
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AuthState&&(identical(other.emailOrPhone, emailOrPhone) || other.emailOrPhone == emailOrPhone)&&(identical(other.isLoggedIn, isLoggedIn) || other.isLoggedIn == isLoggedIn)&&(identical(other.token, token) || other.token == token));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AuthState&&(identical(other.emailOrPhone, emailOrPhone) || other.emailOrPhone == emailOrPhone)&&(identical(other.isLoggedIn, isLoggedIn) || other.isLoggedIn == isLoggedIn)&&(identical(other.token, token) || other.token == token)&&const DeepCollectionEquality().equals(other._user, _user));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,emailOrPhone,isLoggedIn,token);
+int get hashCode => Object.hash(runtimeType,emailOrPhone,isLoggedIn,token,const DeepCollectionEquality().hash(_user));
 
 @override
 String toString() {
-  return 'AuthState(emailOrPhone: $emailOrPhone, isLoggedIn: $isLoggedIn, token: $token)';
+  return 'AuthState(emailOrPhone: $emailOrPhone, isLoggedIn: $isLoggedIn, token: $token, user: $user)';
 }
 
 
@@ -116,7 +124,7 @@ abstract mixin class _$AuthStateCopyWith<$Res> implements $AuthStateCopyWith<$Re
   factory _$AuthStateCopyWith(_AuthState value, $Res Function(_AuthState) _then) = __$AuthStateCopyWithImpl;
 @override @useResult
 $Res call({
- String emailOrPhone, bool isLoggedIn, String token
+ String emailOrPhone, bool isLoggedIn, String token, Map<String, dynamic> user
 });
 
 
@@ -133,12 +141,13 @@ class __$AuthStateCopyWithImpl<$Res>
 
 /// Create a copy of AuthState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? emailOrPhone = null,Object? isLoggedIn = null,Object? token = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? emailOrPhone = null,Object? isLoggedIn = null,Object? token = null,Object? user = null,}) {
   return _then(_AuthState(
 emailOrPhone: null == emailOrPhone ? _self.emailOrPhone : emailOrPhone // ignore: cast_nullable_to_non_nullable
 as String,isLoggedIn: null == isLoggedIn ? _self.isLoggedIn : isLoggedIn // ignore: cast_nullable_to_non_nullable
 as bool,token: null == token ? _self.token : token // ignore: cast_nullable_to_non_nullable
-as String,
+as String,user: null == user ? _self._user : user // ignore: cast_nullable_to_non_nullable
+as Map<String, dynamic>,
   ));
 }
 
