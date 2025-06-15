@@ -7,7 +7,9 @@
         {
             "name": "hui_application",
             "request": "launch",
-            "type": "dart"
+            "type": "dart",
+            "flutterMode": "debug",
+            "deviceId": "chrome",
         },
         {
             "name": "hui_application (profile mode)",

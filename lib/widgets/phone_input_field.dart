@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_libphonenumber/flutter_libphonenumber.dart';
+import 'package:hui_application/l10n/generated/app_localizations.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:intl_phone_field/phone_number.dart';
 
@@ -9,6 +10,7 @@ class PhoneInputField extends StatefulWidget {
   final FocusNode? focusNode;
   final Future<String?> Function(PhoneNumber?)? validator;
   final bool enabled;
+  final String? labelText;
 
   const PhoneInputField({
     super.key,
@@ -17,6 +19,7 @@ class PhoneInputField extends StatefulWidget {
     this.focusNode,
     this.validator,
     this.enabled = true,
+    this.labelText,
   });
 
   @override
@@ -48,17 +51,17 @@ class PhoneInputFieldState extends State<PhoneInputField> {
   Future<String?> validatePhone(PhoneNumber? phone) async {
     try {
       if (phone!.completeNumber.isEmpty) {
-        _errorText = 'Phone number cannot be empty';
+        _errorText = S.of(context)!.phone_number_cannot_be_empty;
       }
       final parsed = await parse(phone.completeNumber);
       final isValid = parsed['type'] != null;
 
       setState(() {
-        _errorText = isValid ? null : 'Invalid phone number';
+        _errorText = isValid ? null : S.of(context)!.phone_number_error;
       });
     } catch (e) {
       setState(() {
-        _errorText = 'Invalid phone number';
+        _errorText = S.of(context)!.phone_number_error;
       });
     }
     return _errorText;
@@ -74,14 +77,9 @@ class PhoneInputFieldState extends State<PhoneInputField> {
       autovalidateMode: AutovalidateMode.onUserInteraction,
       disableLengthCheck: true,
       decoration: InputDecoration(
-        labelText: 'Phone Number',
-        border: const OutlineInputBorder(),
+        labelText: widget.labelText ?? S.of(context)!.phone_placeholder,
         errorText: _errorText,
         contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-        disabledBorder: OutlineInputBorder(
-          borderRadius: const BorderRadius.all(Radius.circular(8)),
-          borderSide: BorderSide(color: Colors.grey.shade300, width: 1.5),
-        ),
       ),
       onChanged: widget.onChanged,
       validator: validatePhone,

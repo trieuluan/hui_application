@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hui_application/features/auth/models/auth_state.dart';
 import 'package:hui_application/features/auth/providers/auth_provider.dart';
-import 'package:hui_application/services/auth_manager.dart';
 import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -35,20 +35,20 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
   Future<void> _checkFirstTime() async {
     final prefs = await SharedPreferences.getInstance();
     final isFirstTime = prefs.getBool('isFirstTime') ?? true;
-    if (isFirstTime) {
-      // Navigate to the intro screen
-      Future.delayed(const Duration(seconds: 3), () {
-        if (!mounted) return;
-        context.go('/intro');
-      });
-      // Set the flag to false
-      await prefs.setBool('isFirstTime', false);
-    } else {
-      final isLoggedIn = ref.watch(authProvider).isLoggedIn;
-      if (!mounted) return;
-      // Navigate to the main screen
-      context.go(isLoggedIn ? '/home' : '/intro');
+    final authNotifier = ref.read(authNotifierProvider);
+
+    final isAuthenticated = authNotifier.isAuthenticated;
+    if (!mounted) return;
+    if (isAuthenticated) {
+      context.go('/home');
+      return;
     }
+    final nextRoute = isFirstTime ? '/intro' : '/login';
+    if (isFirstTime) {
+      await Future.delayed(const Duration(seconds: 3));
+      await prefs.setBool('isFirstTime', false);
+    }
+    context.go(nextRoute);
   }
 
   @override

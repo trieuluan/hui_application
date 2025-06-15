@@ -15,116 +15,310 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$AuthState {
 
- String get emailOrPhone; bool get isLoggedIn; String get token; Map<String, dynamic> get user;
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AuthState);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'AuthState()';
+}
+
+
+}
+
+/// @nodoc
+class $AuthStateCopyWith<$Res>  {
+$AuthStateCopyWith(AuthState _, $Res Function(AuthState) __);
+}
+
+
+/// @nodoc
+
+
+class _Initial implements AuthState {
+  const _Initial();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Initial);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'AuthState.initial()';
+}
+
+
+}
+
+
+
+
+/// @nodoc
+
+
+class _Loading implements AuthState {
+  const _Loading();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Loading);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'AuthState.loading()';
+}
+
+
+}
+
+
+
+
+/// @nodoc
+
+
+class _Authenticated implements AuthState {
+  const _Authenticated({required this.token, required this.user});
+  
+
+ final  String token;
+ final  User user;
+
 /// Create a copy of AuthState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-$AuthStateCopyWith<AuthState> get copyWith => _$AuthStateCopyWithImpl<AuthState>(this as AuthState, _$identity);
+_$AuthenticatedCopyWith<_Authenticated> get copyWith => __$AuthenticatedCopyWithImpl<_Authenticated>(this, _$identity);
 
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AuthState&&(identical(other.emailOrPhone, emailOrPhone) || other.emailOrPhone == emailOrPhone)&&(identical(other.isLoggedIn, isLoggedIn) || other.isLoggedIn == isLoggedIn)&&(identical(other.token, token) || other.token == token)&&const DeepCollectionEquality().equals(other.user, user));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Authenticated&&(identical(other.token, token) || other.token == token)&&(identical(other.user, user) || other.user == user));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,emailOrPhone,isLoggedIn,token,const DeepCollectionEquality().hash(user));
+int get hashCode => Object.hash(runtimeType,token,user);
 
 @override
 String toString() {
-  return 'AuthState(emailOrPhone: $emailOrPhone, isLoggedIn: $isLoggedIn, token: $token, user: $user)';
+  return 'AuthState.authenticated(token: $token, user: $user)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class $AuthStateCopyWith<$Res>  {
-  factory $AuthStateCopyWith(AuthState value, $Res Function(AuthState) _then) = _$AuthStateCopyWithImpl;
+abstract mixin class _$AuthenticatedCopyWith<$Res> implements $AuthStateCopyWith<$Res> {
+  factory _$AuthenticatedCopyWith(_Authenticated value, $Res Function(_Authenticated) _then) = __$AuthenticatedCopyWithImpl;
 @useResult
 $Res call({
- String emailOrPhone, bool isLoggedIn, String token, Map<String, dynamic> user
+ String token, User user
 });
 
 
-
+$UserCopyWith<$Res> get user;
 
 }
 /// @nodoc
-class _$AuthStateCopyWithImpl<$Res>
-    implements $AuthStateCopyWith<$Res> {
-  _$AuthStateCopyWithImpl(this._self, this._then);
+class __$AuthenticatedCopyWithImpl<$Res>
+    implements _$AuthenticatedCopyWith<$Res> {
+  __$AuthenticatedCopyWithImpl(this._self, this._then);
 
-  final AuthState _self;
-  final $Res Function(AuthState) _then;
+  final _Authenticated _self;
+  final $Res Function(_Authenticated) _then;
 
 /// Create a copy of AuthState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? emailOrPhone = null,Object? isLoggedIn = null,Object? token = null,Object? user = null,}) {
-  return _then(_self.copyWith(
-emailOrPhone: null == emailOrPhone ? _self.emailOrPhone : emailOrPhone // ignore: cast_nullable_to_non_nullable
-as String,isLoggedIn: null == isLoggedIn ? _self.isLoggedIn : isLoggedIn // ignore: cast_nullable_to_non_nullable
-as bool,token: null == token ? _self.token : token // ignore: cast_nullable_to_non_nullable
+@pragma('vm:prefer-inline') $Res call({Object? token = null,Object? user = null,}) {
+  return _then(_Authenticated(
+token: null == token ? _self.token : token // ignore: cast_nullable_to_non_nullable
 as String,user: null == user ? _self.user : user // ignore: cast_nullable_to_non_nullable
-as Map<String, dynamic>,
+as User,
   ));
 }
 
+/// Create a copy of AuthState
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$UserCopyWith<$Res> get user {
+  
+  return $UserCopyWith<$Res>(_self.user, (value) {
+    return _then(_self.copyWith(user: value));
+  });
 }
-
+}
 
 /// @nodoc
 
 
-class _AuthState implements AuthState {
-  const _AuthState({this.emailOrPhone = '', this.isLoggedIn = false, this.token = '', final  Map<String, dynamic> user = const {}}): _user = user;
+class _Unauthenticated implements AuthState {
+  const _Unauthenticated();
   
 
-@override@JsonKey() final  String emailOrPhone;
-@override@JsonKey() final  bool isLoggedIn;
-@override@JsonKey() final  String token;
- final  Map<String, dynamic> _user;
-@override@JsonKey() Map<String, dynamic> get user {
-  if (_user is EqualUnmodifiableMapView) return _user;
-  // ignore: implicit_dynamic_type
-  return EqualUnmodifiableMapView(_user);
-}
 
 
-/// Create a copy of AuthState
-/// with the given fields replaced by the non-null parameter values.
-@override @JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-_$AuthStateCopyWith<_AuthState> get copyWith => __$AuthStateCopyWithImpl<_AuthState>(this, _$identity);
 
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AuthState&&(identical(other.emailOrPhone, emailOrPhone) || other.emailOrPhone == emailOrPhone)&&(identical(other.isLoggedIn, isLoggedIn) || other.isLoggedIn == isLoggedIn)&&(identical(other.token, token) || other.token == token)&&const DeepCollectionEquality().equals(other._user, _user));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Unauthenticated);
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,emailOrPhone,isLoggedIn,token,const DeepCollectionEquality().hash(_user));
+int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'AuthState(emailOrPhone: $emailOrPhone, isLoggedIn: $isLoggedIn, token: $token, user: $user)';
+  return 'AuthState.unauthenticated()';
+}
+
+
+}
+
+
+
+
+/// @nodoc
+
+
+class _OtpSent implements AuthState {
+  const _OtpSent();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _OtpSent);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'AuthState.otpSent()';
+}
+
+
+}
+
+
+
+
+/// @nodoc
+
+
+class _OtpVerified implements AuthState {
+  const _OtpVerified();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _OtpVerified);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'AuthState.otpVerified()';
+}
+
+
+}
+
+
+
+
+/// @nodoc
+
+
+class _Error implements AuthState {
+  const _Error(this.message);
+  
+
+ final  String message;
+
+/// Create a copy of AuthState
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$ErrorCopyWith<_Error> get copyWith => __$ErrorCopyWithImpl<_Error>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Error&&(identical(other.message, message) || other.message == message));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,message);
+
+@override
+String toString() {
+  return 'AuthState.error(message: $message)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class _$AuthStateCopyWith<$Res> implements $AuthStateCopyWith<$Res> {
-  factory _$AuthStateCopyWith(_AuthState value, $Res Function(_AuthState) _then) = __$AuthStateCopyWithImpl;
-@override @useResult
+abstract mixin class _$ErrorCopyWith<$Res> implements $AuthStateCopyWith<$Res> {
+  factory _$ErrorCopyWith(_Error value, $Res Function(_Error) _then) = __$ErrorCopyWithImpl;
+@useResult
 $Res call({
- String emailOrPhone, bool isLoggedIn, String token, Map<String, dynamic> user
+ String message
 });
 
 
@@ -132,22 +326,19 @@ $Res call({
 
 }
 /// @nodoc
-class __$AuthStateCopyWithImpl<$Res>
-    implements _$AuthStateCopyWith<$Res> {
-  __$AuthStateCopyWithImpl(this._self, this._then);
+class __$ErrorCopyWithImpl<$Res>
+    implements _$ErrorCopyWith<$Res> {
+  __$ErrorCopyWithImpl(this._self, this._then);
 
-  final _AuthState _self;
-  final $Res Function(_AuthState) _then;
+  final _Error _self;
+  final $Res Function(_Error) _then;
 
 /// Create a copy of AuthState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? emailOrPhone = null,Object? isLoggedIn = null,Object? token = null,Object? user = null,}) {
-  return _then(_AuthState(
-emailOrPhone: null == emailOrPhone ? _self.emailOrPhone : emailOrPhone // ignore: cast_nullable_to_non_nullable
-as String,isLoggedIn: null == isLoggedIn ? _self.isLoggedIn : isLoggedIn // ignore: cast_nullable_to_non_nullable
-as bool,token: null == token ? _self.token : token // ignore: cast_nullable_to_non_nullable
-as String,user: null == user ? _self._user : user // ignore: cast_nullable_to_non_nullable
-as Map<String, dynamic>,
+@pragma('vm:prefer-inline') $Res call({Object? message = null,}) {
+  return _then(_Error(
+null == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
+as String,
   ));
 }
 

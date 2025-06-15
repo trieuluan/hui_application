@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_libphonenumber/flutter_libphonenumber.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hui_application/core/network/api_exception.dart';
+import 'package:hui_application/features/auth/models/auth_state.dart';
+import 'package:hui_application/features/auth/providers/auth_provider.dart';
+import 'package:hui_application/gen/assets.gen.dart';
+import 'package:hui_application/l10n/generated/app_localizations.dart';
+import 'package:hui_application/widgets/animated_loading_button.dart';
 import 'package:hui_application/widgets/app_text_field.dart';
 import 'package:hui_application/core/utils/snackbar_util.dart';
 import 'package:hui_application/core/validators/validators.dart';
-import 'package:hui_application/services/auth_manager.dart';
 import 'package:hui_application/widgets/phone_input_field.dart';
 import 'package:intl_phone_field/phone_number.dart';
 
@@ -66,17 +72,20 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     });
   }
 
+  get emailOrPhone async => await parse(_emailOrPhone);
+
   @override
   void dispose() {
     _inputController.dispose();
     _focusNode.dispose();
+    _phoneFocusNode.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final authState = ref.watch(authNotifierProvider);
     return Scaffold(
-      backgroundColor: Colors.white,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -86,12 +95,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const SizedBox(height: 40),
-                Image.asset('assets/logo_hui.png', width: 80),
+                Image.asset(Assets.logoHui.path, width: 80),
                 const SizedBox(height: 24),
-                const Text(
-                  'Get started with\nHui Fund',
+                Text(
+                  S.of(context)!.get_start,
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 const SizedBox(height: 32),
                 Row(
@@ -125,42 +137,39 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   ],
                 ),
                 const SizedBox(height: 24),
-                SizedBox(
-                  width: double.infinity,
-                  height: 48,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor:
-                          _formKey.currentState?.validate() == true
-                              ? const Color(0xFF2B46F9)
-                              : Colors.grey,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                    ),
-                    onPressed:
-                        _formKey.currentState?.validate() == true
-                            ? () async {
-                              try {
-                                final avaliable =
-                                    await AuthManager.checkAvailability(
-                                      _emailOrPhone.trim(),
-                                    );
-                                if (avaliable) {
-                                  context.push(
-                                    '/register?emailOrPhone=$_emailOrPhone',
-                                  );
-                                }
-                              } catch (e) {
-                                showGlobalErrorSnackBar(message: e.toString());
+                AnimatedCircleButton(
+                  isLoading: authState.type == AuthStateType.loading,
+                  onPressed:
+                      _formKey.currentState?.validate() == true
+                          ? () async {
+                            try {
+                              final phoneParse = await emailOrPhone;
+                              final authNotifier = ref.read(
+                                authNotifierProvider.notifier,
+                              );
+                              authNotifier.showLoading();
+                              final isAvailable = await authNotifier
+                                  .checkAvailability(phoneParse['e164']);
+                              if (!isAvailable) {
+                                await authNotifier.sendOtp(phoneParse['e164']);
+                                context.push(
+                                  '/otp-register?emailOrPhone=${phoneParse['e164']}',
+                                );
+                              } else {
+                                context.push(
+                                  '/password/${Uri.encodeComponent(phoneParse['e164'])}',
+                                );
                               }
+                              authNotifier.hideLoading();
+                            } on ApiException catch (e) {
+                              showGlobalErrorSnackBar(
+                                message: e.message.toString(),
+                                duration: const Duration(seconds: 60),
+                              );
                             }
-                            : null,
-                    child: const Text(
-                      'Continue',
-                      style: TextStyle(fontSize: 16, color: Colors.white),
-                    ),
-                  ),
+                          }
+                          : null,
+                  title: S.of(context)!.continue_,
                 ),
                 const SizedBox(height: 16),
                 Row(
@@ -179,19 +188,17 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   height: 48,
                   child: ElevatedButton.icon(
                     style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.black,
-                      backgroundColor: Colors.grey.shade200,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
-                      ),
+                      foregroundColor:
+                          Theme.of(context).colorScheme.onSurfaceVariant,
+                      backgroundColor: Theme.of(context).colorScheme.surfaceDim,
                     ),
-                    icon: const Icon(
+                    icon: Icon(
                       FontAwesomeIcons.squareFacebook,
-                      color: Colors.blue,
+                      color: Colors.blue.shade700,
                       size: 24,
                     ),
                     onPressed: () {},
-                    label: const Text('Continue with Facebook'),
+                    label: Text(S.of(context)!.continue_facebook),
                   ),
                 ),
                 const SizedBox(height: 12),
@@ -200,10 +207,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   height: 48,
                   child: ElevatedButton.icon(
                     style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.black,
-                      backgroundColor: Colors.grey.shade200,
+                      foregroundColor:
+                          Theme.of(context).colorScheme.onSurfaceVariant,
+                      backgroundColor: Theme.of(context).colorScheme.surfaceDim,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16),
+                        borderRadius: BorderRadius.circular(48 / 2),
                       ),
                     ),
                     icon: const Icon(
@@ -212,29 +220,40 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       size: 24,
                     ),
                     onPressed: () {},
-                    label: const Text('Continue with Google'),
+                    label: Text(S.of(context)!.continue_google),
                   ),
                 ),
                 const Spacer(),
-                const Text(
-                  'By continuing, you agree to receive calls or messages (including automated) from Hui App and its partners. Reply “STOP” at any time to unsubscribe.',
-                  style: TextStyle(fontSize: 12, color: Colors.black54),
+                Text(
+                  S.of(context)!.agreement_message,
+                  style: TextStyle(fontSize: 12),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 12),
-                const Text.rich(
+                Text.rich(
                   TextSpan(
-                    text: 'Protected by reCAPTCHA: Google ',
-                    style: TextStyle(fontSize: 12, color: Colors.black54),
+                    text:
+                        S
+                            .of(context)!
+                            .recaptcha_protected, // Chuỗi đa ngôn ngữ cho "Protected by reCAPTCHA: Google"
+                    style: const TextStyle(fontSize: 12),
                     children: [
                       TextSpan(
-                        text: 'Policy',
-                        style: TextStyle(color: Colors.blue),
+                        text:
+                            S
+                                .of(context)!
+                                .google_policy, // Chuỗi đa ngôn ngữ cho "Policy"
+                        style: const TextStyle(color: Colors.blue),
                       ),
-                      TextSpan(text: ' and '),
                       TextSpan(
-                        text: 'Terms.',
-                        style: TextStyle(color: Colors.blue),
+                        text: ' ${S.of(context)!.and} ',
+                      ), // Khoảng trắng hoặc "and" nếu cần dịch
+                      TextSpan(
+                        text:
+                            S
+                                .of(context)!
+                                .google_terms, // Chuỗi đa ngôn ngữ cho "Terms"
+                        style: const TextStyle(color: Colors.blue),
                       ),
                     ],
                   ),

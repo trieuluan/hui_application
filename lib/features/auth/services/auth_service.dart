@@ -1,26 +1,38 @@
-import 'package:dio/dio.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hui_application/core/constants/endpoints.dart';
 import 'package:hui_application/core/network/api_client.dart';
+import 'package:hui_application/core/network/api_exception.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+part 'auth_service.g.dart';
+
+@riverpod
+AuthService authService(Ref ref) {
+  final api = ref.read(apiclientProvider);
+  return AuthService(api);
+}
 
 class AuthService {
-  static Future<String?> login({
+  final ApiClient _api;
+
+  AuthService(this._api);
+
+  Future<Map<String, dynamic>?> login({
     required String emailOrPhone,
     required String password,
   }) async {
     try {
-      final response = await ApiClient.post(
+      final response = await _api.post(
         Endpoints.login,
         data: {'emailOrPhone': emailOrPhone, 'password': password},
       );
-      final token = response.data['token'] as String?;
-      return token;
-    } on DioException catch (e) {
-      print('❌ Login error: ${e.response?.data ?? e.message}');
-      return null;
+      return response.data;
+    } on ApiException {
+      rethrow;
     }
   }
 
-  static Future<Map<String, dynamic>?> register({
+  Future<Map<String, dynamic>?> register({
     required String emailOrPhone,
     required String name,
     required String password,
@@ -28,7 +40,7 @@ class AuthService {
     required String email,
   }) async {
     try {
-      final response = await ApiClient.post(
+      final response = await _api.post(
         Endpoints.register,
         data: {
           'emailOrPhone': emailOrPhone,
@@ -39,31 +51,28 @@ class AuthService {
         },
       );
       return response.data;
-    } on DioException catch (e) {
-      throw e.response?.data;
+    } on ApiException {
+      rethrow;
     }
   }
 
-  static Future<bool> checkAvailability({required String emailOrPhone}) async {
+  Future<bool> checkAvailability({required String emailOrPhone}) async {
     try {
-      final response = await ApiClient.post(
+      final response = await _api.post(
         Endpoints.checkAvailability,
         data: {'emailOrPhone': emailOrPhone},
       );
       return response.data['available'] as bool;
-    } on DioException catch (e) {
-      final errorMessage =
-          e.response!.data['details'][0]['message'] ??
-          'Failed to check availability.';
-      throw errorMessage;
+    } on ApiException {
+      rethrow;
     }
   }
 
-  static Future<void> logout() async {
+  Future<void> logout() async {
     try {
-      await ApiClient.post(Endpoints.logout);
-    } on DioException catch (e) {
-      print('❌ Logout error: ${e.response?.data ?? e.message}');
+      await _api.post(Endpoints.logout);
+    } on ApiException {
+      rethrow;
     }
   }
 }

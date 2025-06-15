@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hui_application/gen/assets.gen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class IntroScreen extends StatefulWidget {
@@ -15,21 +16,18 @@ class _IntroScreenState extends State<IntroScreen> {
 
   final List<Map<String, String>> onboardingData = [
     {
-      "image": "assets/images/onboarding_step_1.png",
+      "image": Assets.images.onboardingStep1.path,
       "text": "Welcome!\nLet’s take care of your finances together.",
     },
     {
-      "image": "assets/images/onboarding_step_2.png",
+      "image": Assets.images.onboardingStep2.path,
       "text": "Good to see you,\nyour savings are just a tap away.",
     },
     {
-      "image": "assets/images/onboarding_step_3.png",
+      "image": Assets.images.onboardingStep3.path,
       "text": "Ready to manage your\nmoney?",
     },
-    {
-      "image": "assets/images/onboarding_step_4.png",
-      "text": "Let’s get started.",
-    },
+    {"image": Assets.images.onboardingStep4.path, "text": "Let’s get started."},
   ];
 
   void _onSkip() async {

@@ -55,7 +55,6 @@ class _AppTextFieldState extends State<AppTextField> {
         labelText: widget.label,
         prefixIcon: widget.prefixIcon,
         suffixIcon: widget.suffixIcon,
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
         contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         errorText:
             _showError ? widget.validator?.call(widget.controller!.text) : null,

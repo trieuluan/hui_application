@@ -4,9 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hui_application/core/utils/snackbar_util.dart';
 import 'package:hui_application/core/validators/validators.dart';
+import 'package:hui_application/features/auth/models/auth_state.dart';
 import 'package:hui_application/features/auth/providers/auth_provider.dart';
-import 'package:hui_application/features/auth/utils/auth_persistence.dart';
-import 'package:hui_application/services/auth_manager.dart';
+import 'package:hui_application/widgets/animated_loading_button.dart';
 import 'package:hui_application/widgets/app_reactive_text_field.dart';
 import 'package:hui_application/widgets/reactive_intl_phone_field.dart';
 import 'package:reactive_forms/reactive_forms.dart';
@@ -81,18 +81,10 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final authState = ref.watch(authNotifierProvider);
+
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            if (Navigator.of(context).canPop()) {
-              context.pop();
-            } else {
-              context.go('/login');
-            }
-          },
-        ),
         automaticallyImplyLeading: true,
         title: const Text(
           'Register',
@@ -181,68 +173,57 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                 },
               ),
               const SizedBox(height: 32),
-              SizedBox(
-                width: double.infinity,
-                height: 52,
-                child: ElevatedButton(
-                  onPressed: () async {
-                    if (form.valid) {
-                      // Perform registration logic here
-                      // For example, call an API to register the user
-                      // After successful registration, navigate to the next screen
-                      try {
-                        final result = await AuthManager.register(
-                          emailOrPhone:
-                              _phoneFieldKey
-                                  .currentState!
-                                  .phoneNumber!
-                                  .completeNumber,
-                          name: form.value['name'] as String,
-                          password: form.value['password'] as String,
-                          passwordConfirm:
-                              form.value['passwordConfirm'] as String,
-                          email: form.value['email'] as String,
-                        );
-                        if (result != null && result['success']) {
-                          ref.read(authProvider.notifier)
-                            ..login(true)
-                            ..setUser(result['user'])
-                            ..setToken(result['token'] as String);
-                          context.go('/verify');
-                        }
-                      } catch (e) {
-                        // Format error and suggestions
-                        final error = e as Map<String, dynamic>;
-                        final errorMessage =
-                            error['error'] ?? 'An unknown error occurred.';
-                        final suggestions =
-                            (error['suggestions'] as List<dynamic>?)
-                                ?.map((s) => '- $s')
-                                .join('\n') ??
-                            '';
-                        final message =
-                            suggestions.isNotEmpty
-                                ? '$errorMessage\nSuggestions:\n$suggestions'
-                                : error;
-
-                        // Show the error and suggestions in the snackbar
-                        showGlobalErrorSnackBar(
-                          message: message.toString(),
-                          duration: const Duration(seconds: 5),
-                        );
+              AnimatedCircleButton(
+                isLoading: authState.type == AuthStateType.loading,
+                onPressed: () async {
+                  if (form.valid) {
+                    // Perform registration logic here
+                    // For example, call an API to register the user
+                    // After successful registration, navigate to the next screen
+                    try {
+                      final result = await ref
+                          .read(authNotifierProvider.notifier)
+                          .register(
+                            emailOrPhone:
+                                _phoneFieldKey
+                                    .currentState!
+                                    .phoneNumber!
+                                    .completeNumber,
+                            name: form.value['name'] as String,
+                            password: form.value['password'] as String,
+                            passwordConfirm:
+                                form.value['passwordConfirm'] as String,
+                            email: form.value['email'] as String,
+                          );
+                      if (result) {
+                        context.go('/home');
                       }
-                    } else {
-                      form.markAllAsTouched();
+                    } catch (e) {
+                      // Format error and suggestions
+                      final error = e as Map<String, dynamic>;
+                      final errorMessage =
+                          error['error'] ?? 'An unknown error occurred.';
+                      final suggestions =
+                          (error['suggestions'] as List<dynamic>?)
+                              ?.map((s) => '- $s')
+                              .join('\n') ??
+                          '';
+                      final message =
+                          suggestions.isNotEmpty
+                              ? '$errorMessage\nSuggestions:\n$suggestions'
+                              : error;
+
+                      // Show the error and suggestions in the snackbar
+                      showGlobalErrorSnackBar(
+                        message: message.toString(),
+                        duration: const Duration(seconds: 5),
+                      );
                     }
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF2B46F9),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30),
-                    ),
-                  ),
-                  child: const Text('Continue', style: TextStyle(fontSize: 16)),
-                ),
+                  } else {
+                    form.markAllAsTouched();
+                  }
+                },
+                title: 'Continue',
               ),
               const SizedBox(height: 24),
               const Text.rich(
