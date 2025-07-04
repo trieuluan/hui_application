@@ -39,7 +39,7 @@ class PhoneInputFieldState extends State<PhoneInputField> {
     init();
     _internalController = widget.controller ?? TextEditingController();
     _internalFocusNode = widget.focusNode ?? FocusNode();
-
+    
     final defaultCountry = CountryManager().countries.firstWhere(
       (country) => country.countryCode == 'VN',
       orElse: () => CountryManager().countries.first,

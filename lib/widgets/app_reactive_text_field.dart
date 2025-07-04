@@ -22,6 +22,8 @@ class AppReactiveTextField<T> extends StatefulWidget {
   final void Function(FormControl<T>)? onChanged;
   final bool Function(FormControl<T>)? showErrors;
   final InputDecoration? decoration;
+  final bool? readOnly;
+  final void Function(FormControl<T>)? onTap;
 
   final bool isCurrency;
   final String currencySymbol;
@@ -46,6 +48,8 @@ class AppReactiveTextField<T> extends StatefulWidget {
     this.valueAccessor,
     this.showErrors,
     this.decoration,
+    this.readOnly,
+    this.onTap,
   }) : isCurrency = false,
        currencySymbol = '' {
     assert(
@@ -69,6 +73,8 @@ class AppReactiveTextField<T> extends StatefulWidget {
     this.valueAccessor,
     this.showErrors,
     this.decoration,
+    this.readOnly,
+    this.onTap,
   }) : isCurrency = true,
        keyboardType = TextInputType.numberWithOptions(decimal: false),
        obscureText = false,
@@ -108,7 +114,9 @@ class _AppReactiveTextField<T> extends State<AppReactiveTextField<T>> {
       valueAccessor: widget.valueAccessor,
       decoration: widget.decoration ?? _buildDecoration(),
       validationMessages: widget.validationMessages,
+      readOnly: widget.readOnly ?? false,
       maxLines: widget.maxLines ?? 1,
+      onTap: widget.onTap,
       onChanged:
           widget.onChanged != null
               ? (control) => widget.onChanged!(control)
@@ -123,8 +131,8 @@ class _AppReactiveTextField<T> extends State<AppReactiveTextField<T>> {
       prefixIcon: widget.prefixIcon,
       suffixIcon: widget.suffixIcon,
       border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
-      contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-      fillColor: Colors.white,
+      contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+      fillColor: Theme.of(context).colorScheme.surfaceContainerHigh,
     );
   }
 }

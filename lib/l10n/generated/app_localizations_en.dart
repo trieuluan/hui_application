@@ -33,7 +33,8 @@ class SEn extends S {
   String get phone_number_empty => 'Please enter phone number';
 
   @override
-  String get agreement_message => 'By continuing, you agree to receive calls or messages (including automated) from Hui App and its partners. Reply “STOP” at any time to unsubscribe.';
+  String get agreement_message =>
+      'By continuing, you agree to receive calls or messages (including automated) from Hui App and its partners. Reply \"STOP\" at any time to unsubscribe.';
 
   @override
   String get recaptcha_protected => 'Protected by reCAPTCHA: Google ';
@@ -129,7 +130,7 @@ class SEn extends S {
   String get year => 'Year';
 
   @override
-  String required_error(String fieldName) {
+  String required_error(Object fieldName) {
     return '$fieldName is required';
   }
 
@@ -143,4 +144,114 @@ class SEn extends S {
 
   @override
   String get auto_start_when_member_full => 'Auto start when member full';
+
+  @override
+  String get open_date => 'Open date';
+
+  @override
+  String get time_opened => 'Time opened';
+
+  @override
+  String get cycle_time => 'Cycle time';
+
+  @override
+  String get start_date => 'Start date';
+
+  @override
+  String get end_date => 'End date';
+
+  @override
+  String get choise_start_date_or_click_to_start =>
+      'Choose start date or click to start';
+
+  @override
+  String get hui_fund => 'Hui Fund';
+
+  @override
+  String get no_groups_yet => 'No groups yet';
+
+  @override
+  String get create_first_group_description =>
+      'Create your first group to start saving and managing finances with friends and family';
+
+  @override
+  String get create_new_group => 'Create new group';
+
+  @override
+  String get refresh => 'Refresh';
+
+  @override
+  String get delete => 'Delete';
+
+  @override
+  String get edit => 'Edit';
+
+  @override
+  String get language => 'Language';
+
+  @override
+  String get account => 'Account';
+
+  @override
+  String get profile => 'Profile';
+
+  @override
+  String get security => 'Security';
+
+  @override
+  String get notifications => 'Notifications';
+
+  @override
+  String get payment_methods => 'Payment Methods';
+
+  @override
+  String get transaction_history => 'Transaction History';
+
+  @override
+  String get help_support => 'Help & Support';
+
+  @override
+  String get settings => 'Settings';
+
+  @override
+  String get logout => 'Logout';
+
+  @override
+  String get no_email_provided => 'No email provided';
+
+  @override
+  String get no_phone_provided => 'No phone number provided';
+
+  @override
+  String get loading => 'Loading...';
+
+  @override
+  String get error => 'Error';
+
+  @override
+  String get vietnamese => 'Vietnamese';
+
+  @override
+  String get english => 'English';
+
+  @override
+  String get home => 'Home';
+
+  @override
+  String get groups => 'Groups';
+
+  @override
+  String get theme => 'Theme';
+
+  @override
+  String get light_mode => 'Light Mode';
+
+  @override
+  String get dark_mode => 'Dark Mode';
+
+  @override
+  String get system_mode => 'System Mode';
+
+  @override
+  String get light_dark => 'Light / Dark';
 }

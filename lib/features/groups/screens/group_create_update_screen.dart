@@ -25,9 +25,7 @@ class _GroupCreateUpdateScreenState
   final form = FormGroup({
     'name': FormControl<String>(validators: [Validators.required]),
     'description': FormControl<String>(),
-    'amountPerCycle': FormControl<double>(
-      validators: [Validators.required, Validators.number()],
-    ),
+    'amountPerCycle': FormControl<double>(validators: [Validators.required]),
     'totalCycles': FormControl<int>(
       validators: [Validators.required, Validators.number()],
     ),
@@ -35,6 +33,10 @@ class _GroupCreateUpdateScreenState
       validators: [Validators.required, Validators.number()],
     ),
     'cycleUnit': FormControl<String>(validators: [Validators.required]),
+    'cycleTime': FormControl<String>(validators: [Validators.required]),
+    'startDate': FormControl<DateTime>(
+      value: DateTime.now().add(Duration(days: 1)),
+    ),
     'maxMembers': FormControl<int>(
       validators: [Validators.number(), Validators.required],
     ),
@@ -71,7 +73,7 @@ class _GroupCreateUpdateScreenState
                   // You can access the form values using form.value
                   final group = Group.fromForm(form.value);
                   final success = await ref
-                      .read(groupNotiferProvider.notifier)
+                      .read(groupNotifierProvider.notifier)
                       .createGroup(group);
                   // After saving, you can navigate back or show a success message
                   if (success) {
@@ -101,7 +103,7 @@ class _GroupCreateUpdateScreenState
         child: ListView(
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
               child: Column(
                 children: [
                   AppReactiveTextField<String>(
@@ -221,6 +223,51 @@ class _GroupCreateUpdateScreenState
                               ),
                             ),
                           ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: AppReactiveTextField(
+                          label: S.of(context)!.start_date,
+                          formControlName: 'startDate',
+                          readOnly: true,
+                          onTap: (control) async {
+                            final DateTime? picked = await showDatePicker(
+                              context: context,
+                              initialDate: control.value as DateTime,
+                              firstDate: control.value as DateTime,
+                              lastDate: DateTime(2101),
+                            );
+                            if (picked != null) {
+                              control.value = picked;
+                            }
+                          },
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: AppReactiveTextField<String>(
+                          label: S.of(context)!.time_opened,
+                          formControlName: 'cycleTime',
+                          readOnly: true,
+                          onTap: (control) async {
+                            final TimeOfDay? picked = await showTimePicker(
+                              context: context,
+                              initialTime: TimeOfDay.now(),
+                            );
+                            control.value = picked?.format(context);
+                          },
+                          validationMessages: {
+                            ValidationMessage.required:
+                                (error) => S
+                                    .of(context)!
+                                    .required_error(S.of(context)!.time_opened),
+                          },
                         ),
                       ),
                     ],

@@ -164,7 +164,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             } on ApiException catch (e) {
                               showGlobalErrorSnackBar(
                                 message: e.message.toString(),
-                                duration: const Duration(seconds: 60),
+                                duration: const Duration(seconds: 5),
                               );
                             }
                           }

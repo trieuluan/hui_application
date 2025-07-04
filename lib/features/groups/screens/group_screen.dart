@@ -2,6 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hui_application/features/groups/models/group.dart';
+import 'package:hui_application/features/groups/providers/group_provider.dart';
+import 'package:hui_application/features/groups/screens/group_screen_details/overview.dart';
 
 class GroupScreen extends ConsumerStatefulWidget {
   final String id;
@@ -12,6 +15,8 @@ class GroupScreen extends ConsumerStatefulWidget {
 }
 
 class _GroupScreenState extends ConsumerState<GroupScreen> {
+  Group? group;
+
   @override
   void initState() {
     super.initState();
@@ -22,75 +27,71 @@ class _GroupScreenState extends ConsumerState<GroupScreen> {
     final location = GoRouterState.of(context).uri.toString();
     final selectedTab =
         Uri.parse(location).queryParameters['tab'] ?? 'overview';
+    final groupAsync = ref.watch(groupDetailProvider(widget.id));
 
-    return CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(
-        leading: GestureDetector(
-          onTap: () {
-            context.pop();
-          },
-          child: const Icon(CupertinoIcons.back, size: 24),
-        ),
-        middle: const Text(
-          'Hui Fund',
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-        ),
-        trailing: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            GestureDetector(
-              onTap: () {
-                // Handle search action
-              },
-              child: const Icon(CupertinoIcons.search, size: 24),
+    // Load group data when the screen is built
+    return groupAsync.when(
+      data:
+          (groupData) => Scaffold(
+            appBar: AppBar(
+              title: const Text('Hui Fund'),
+              centerTitle: true,
+              actions: [
+                IconButton(
+                  icon: const Icon(CupertinoIcons.search),
+                  onPressed: () {
+                    // Handle search action
+                  },
+                ),
+                IconButton(
+                  onPressed: () {
+                    // Handle add group action
+                  },
+                  icon: const Icon(CupertinoIcons.slider_horizontal_3),
+                ),
+              ],
             ),
-            const SizedBox(width: 16),
-            GestureDetector(
-              onTap: () {
-                // Handle add group action
-              },
-              child: const Icon(CupertinoIcons.slider_horizontal_3, size: 24),
-            ),
-          ],
-        ),
-      ),
-      child: Scaffold(
-        body: SafeArea(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SizedBox(
-                width: double.infinity,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: CupertinoSlidingSegmentedControl<String>(
-                    groupValue: selectedTab,
-                    children: const {
-                      'overview': Text('Overview'),
-                      'members': Text('Members'),
-                      'invoice': Text('Invoices'),
-                    },
-                    onValueChanged: (value) {
-                      if (value != null) {
-                        context.go('/groups/${widget.id}?tab=$value');
-                      }
+            body: SafeArea(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SizedBox(
+                    width: double.infinity,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: CupertinoSlidingSegmentedControl<String>(
+                        groupValue: selectedTab,
+                        children: const {
+                          'overview': Text('Overview'),
+                          'members': Text('Members'),
+                          'invoice': Text('Invoices'),
+                        },
+                        onValueChanged: (value) {
+                          if (value != null) {
+                            context.go('/groups/${widget.id}?tab=$value');
+                          }
+                        },
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: switch (selectedTab) {
+                      'overview' => GroupScreenOverview(group: groupData!),
+                      'members' => const Center(child: Text('Members')),
+                      'invoice' => const Center(child: Text('Invoices')),
+                      _ => const Center(child: Text('Unknown Tab')),
                     },
                   ),
-                ),
+                ],
               ),
-              const SizedBox(height: 24),
-              Expanded(
-                child: switch (selectedTab) {
-                  'overview' => const Center(child: Text('Overview')),
-                  'members' => const Center(child: Text('Members')),
-                  'invoice' => const Center(child: Text('Invoices')),
-                  _ => const Center(child: Text('Unknown Tab')),
-                },
-              ),
-            ],
+            ),
           ),
-        ),
-      ),
+      error:
+          (error, stack) => Scaffold(
+            appBar: AppBar(title: const Text('Error'), centerTitle: true),
+            body: Center(child: Text('Error: $error')),
+          ),
+      loading: () => Center(child: const CircularProgressIndicator()),
     );
   }
 }

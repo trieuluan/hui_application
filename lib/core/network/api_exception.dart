@@ -1,17 +1,19 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:hui_application/core/utils/string_extension.dart';
 
 class ApiException extends DioException {
-  final String message;
+  final String _customMessage;
   final int? statusCode;
 
   ApiException({
-    required this.message,
+    required String message,
     this.statusCode,
     required super.requestOptions,
-  });
+  }) : _customMessage = message;
+
+  @override
+  String get message => _customMessage;
 
   factory ApiException.fromDioError(DioException error) {
     switch (error.type) {
@@ -93,5 +95,24 @@ String? _extractErrorMessage(Map<String, dynamic>? data) {
         .join('\n');
     return messages;
   }
-  return data['error'] ?? data['message'];
+  final buffer = StringBuffer();
+
+  if (data['error'] != null) {
+    buffer.writeln(data['error']);
+  }
+
+  if (data['warning'].isNotEmpty == true) {
+    buffer.writeln('${data['warning']}');
+  }
+
+  if (data['suggestions'] is List) {
+    final suggestions = data['suggestions'] as List;
+    for (var suggestion in suggestions) {
+      buffer.writeln('• $suggestion');
+    }
+  }
+
+  if (buffer.isNotEmpty) return buffer.toString().trim();
+
+  return data['message'];
 }

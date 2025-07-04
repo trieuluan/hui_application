@@ -22,6 +22,10 @@ class $AssetsAnimationsGen {
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
+  /// File path: assets/images/default_avatar.png
+  AssetGenImage get defaultAvatar =>
+      const AssetGenImage('assets/images/default_avatar.png');
+
   /// File path: assets/images/onboarding_step_1.png
   AssetGenImage get onboardingStep1 =>
       const AssetGenImage('assets/images/onboarding_step_1.png');
@@ -40,6 +44,7 @@ class $AssetsImagesGen {
 
   /// List of all assets
   List<AssetGenImage> get values => [
+    defaultAvatar,
     onboardingStep1,
     onboardingStep2,
     onboardingStep3,

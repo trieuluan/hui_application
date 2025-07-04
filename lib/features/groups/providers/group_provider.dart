@@ -2,16 +2,15 @@ import 'package:hui_application/core/network/api_exception.dart';
 import 'package:hui_application/features/groups/models/group.dart';
 import 'package:hui_application/features/groups/providers/group_state.dart';
 import 'package:hui_application/features/groups/services/group_service.dart';
+import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'group_provider.g.dart';
 
 @Riverpod(keepAlive: true)
-class GroupNotifer extends _$GroupNotifer {
+class GroupNotifier extends _$GroupNotifier {
   @override
-  GroupState build() {
-    return const GroupState.initial();
-  }
+  GroupState build() => const GroupState.initial();
 
   Future<void> fetchGroups() async {
     state = const GroupState.loading();
@@ -54,4 +53,10 @@ class GroupNotifer extends _$GroupNotifer {
       rethrow;
     }
   }
+}
+
+@riverpod
+Future<Group?> groupDetail(Ref ref, String groupId) async {
+  final groupService = ref.read(groupServiceProvider);
+  return await groupService.getGroup(groupId);
 }

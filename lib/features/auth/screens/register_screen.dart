@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_libphonenumber/flutter_libphonenumber.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hui_application/core/network/api_exception.dart';
 import 'package:hui_application/core/utils/snackbar_util.dart';
 import 'package:hui_application/core/validators/validators.dart';
 import 'package:hui_application/features/auth/models/auth_state.dart';
@@ -198,24 +199,10 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                       if (result) {
                         context.go('/home');
                       }
-                    } catch (e) {
-                      // Format error and suggestions
-                      final error = e as Map<String, dynamic>;
-                      final errorMessage =
-                          error['error'] ?? 'An unknown error occurred.';
-                      final suggestions =
-                          (error['suggestions'] as List<dynamic>?)
-                              ?.map((s) => '- $s')
-                              .join('\n') ??
-                          '';
-                      final message =
-                          suggestions.isNotEmpty
-                              ? '$errorMessage\nSuggestions:\n$suggestions'
-                              : error;
-
+                    } on ApiException catch (e) {
                       // Show the error and suggestions in the snackbar
                       showGlobalErrorSnackBar(
-                        message: message.toString(),
+                        message: e.message.toString(),
                         duration: const Duration(seconds: 5),
                       );
                     }

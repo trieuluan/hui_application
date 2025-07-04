@@ -1,0 +1,15 @@
+
+Showing Recent Errors Only
+Prepare build
+Prepare packages
+Build target RecaptchaInterop
+Build target Runner
+/Users/louis/Development/hui_application/ios/Runner.xcodeproj: Missing package product 'FirebaseAI'
+
+/Users/louis/Development/hui_application/ios/Runner.xcodeproj: Missing package product 'FirebaseAnalytics'
+
+/Users/louis/Development/hui_application/ios/Runner.xcodeproj: Missing package product 'FirebaseAnalyticsCore'
+
+
+
+Activity Log Complete    2/7/25, 04:07    1.2 seconds

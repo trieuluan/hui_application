@@ -27,6 +27,16 @@ class GroupService {
     }
   }
 
+  Future<Group> getGroup(String groupId) async {
+    // Simulate a network call
+    try {
+      final result = await _api.get('/groups/$groupId');
+      return Group.fromJson(result.data);
+    } on ApiException {
+      rethrow;
+    }
+  }
+
   Future<Group> createGroup(Group group) async {
     // Simulate a network call
     try {

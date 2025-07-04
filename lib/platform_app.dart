@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hui_application/core/providers/app_loading_provider.dart';
 import 'package:hui_application/core/providers/app_locale_provider.dart';
+import 'package:hui_application/core/providers/theme_provider.dart';
 import 'package:hui_application/features/auth/models/auth_state.dart';
 import 'package:hui_application/features/auth/providers/auth_provider.dart';
 import 'package:hui_application/l10n/generated/app_localizations.dart';
@@ -50,6 +51,7 @@ class PlatformApp extends ConsumerWidget {
     TextTheme textTheme = createTextTheme(context, "Inter", "Inter");
     MaterialTheme theme = MaterialTheme(textTheme);
     final locale = ref.watch(appLocaleProvider).value;
+    final themeModeAsync = ref.watch(appThemeProvider);
     if (kIsWeb) {
       return MaterialApp.router(
         scaffoldMessengerKey: scaffoldMessengerKey,
@@ -57,7 +59,7 @@ class PlatformApp extends ConsumerWidget {
         routerConfig: router,
         theme: theme.light(),
         darkTheme: theme.dark(),
-        themeMode: ThemeMode.system,
+        themeMode: _getThemeMode(themeModeAsync),
         localizationsDelegates: S.localizationsDelegates,
         supportedLocales: S.supportedLocales,
         locale: locale,
@@ -82,11 +84,27 @@ class PlatformApp extends ConsumerWidget {
         return MaterialApp.router(
           scaffoldMessengerKey: scaffoldMessengerKey,
           debugShowCheckedModeBanner: false,
-          theme: theme.light(),
           routerConfig: router,
+          theme: theme.light(),
+          darkTheme: theme.dark(),
+          themeMode: _getThemeMode(themeModeAsync),
           localizationsDelegates: S.localizationsDelegates,
           supportedLocales: S.supportedLocales,
+          locale: locale,
         );
+    }
+  }
+
+  ThemeMode _getThemeMode(AsyncValue<ThemeMode> themeModeAsync) {
+    final value = themeModeAsync.value;
+    switch (value) {
+      case ThemeMode.light:
+        return ThemeMode.light;
+      case ThemeMode.dark:
+        return ThemeMode.dark;
+      case ThemeMode.system:
+      default:
+        return ThemeMode.system;
     }
   }
 }

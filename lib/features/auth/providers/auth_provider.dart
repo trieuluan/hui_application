@@ -112,10 +112,10 @@ class AuthNotifier extends _$AuthNotifier {
       );
       if (result != null && result['success'] == true) {
         final token = result['token'];
-        final user = result['user'];
+        final user = app_model.User.fromJson(result['user']);
 
         await TokenService.saveToken(token);
-        await TokenService.saveUser(user);
+        await TokenService.saveUser(user.toJson());
         state = AuthState.authenticated(token: token, user: user);
         return true;
       } else {
@@ -124,7 +124,7 @@ class AuthNotifier extends _$AuthNotifier {
       }
     } catch (e) {
       state = AuthState.error(e.toString());
-      return false;
+      rethrow;
     }
   }
 
@@ -134,6 +134,7 @@ class AuthNotifier extends _$AuthNotifier {
       final isAvailable = await authService.checkAvailability(
         emailOrPhone: emailOrPhone,
       );
+      print('isAvailable: $isAvailable');
       return isAvailable;
     } catch (e) {
       state = AuthState.error(e.toString());
@@ -163,6 +164,7 @@ class AuthNotifier extends _$AuthNotifier {
         },
       );
     } catch (e) {
+      print('Error sending OTP: $e');
       state = AuthState.error('Failed to send OTP: ${e.toString()}');
     }
   }

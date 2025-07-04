@@ -33,7 +33,8 @@ class SVi extends S {
   String get phone_number_empty => 'Vui lòng nhập số điện thoại';
 
   @override
-  String get agreement_message => 'Bằng cách tiếp tục, bạn đồng ý nhận cuộc gọi hoặc tin nhắn (bao gồm cả tự động) từ Hui App và các đối tác của nó. Phản hồi “DỪNG” bất kỳ lúc nào để hủy đăng ký.';
+  String get agreement_message =>
+      'Bằng cách tiếp tục, bạn đồng ý nhận cuộc gọi hoặc tin nhắn (bao gồm cả tự động) từ Hui App và các đối tác của nó. Phản hồi \"DỪNG\" bất kỳ lúc nào để hủy đăng ký.';
 
   @override
   String get recaptcha_protected => 'Được bảo vệ bởi reCAPTCHA: Google ';
@@ -57,7 +58,8 @@ class SVi extends S {
   String get verification_code_sent => 'Mã xác minh đã gửi đến điện thoại';
 
   @override
-  String get text_message_info => 'Bạn sẽ nhận được tin nhắn trong vòng 20 giây.';
+  String get text_message_info =>
+      'Bạn sẽ nhận được tin nhắn trong vòng 20 giây.';
 
   @override
   String get resend_code => 'Gửi lại mã';
@@ -129,7 +131,7 @@ class SVi extends S {
   String get year => 'Năm';
 
   @override
-  String required_error(String fieldName) {
+  String required_error(Object fieldName) {
     return '$fieldName là bắt buộc';
   }
 
@@ -143,4 +145,114 @@ class SVi extends S {
 
   @override
   String get auto_start_when_member_full => 'Tự động bắt đầu khi đủ thành viên';
+
+  @override
+  String get open_date => 'Ngày Khui';
+
+  @override
+  String get time_opened => 'Thời gian khui hụi';
+
+  @override
+  String get cycle_time => 'Thời gian mỗi chu kỳ';
+
+  @override
+  String get start_date => 'Ngày bắt đầu';
+
+  @override
+  String get end_date => 'Ngày kết thúc';
+
+  @override
+  String get choise_start_date_or_click_to_start =>
+      'Chọn ngày bắt đầu hoặc nhấn để bắt đầu';
+
+  @override
+  String get hui_fund => 'Hụi Fund';
+
+  @override
+  String get no_groups_yet => 'Chưa có nhóm hụi nào';
+
+  @override
+  String get create_first_group_description =>
+      'Tạo nhóm hụi đầu tiên để bắt đầu tiết kiệm và quản lý tài chính cùng bạn bè, gia đình';
+
+  @override
+  String get create_new_group => 'Tạo nhóm hụi mới';
+
+  @override
+  String get refresh => 'Làm mới';
+
+  @override
+  String get delete => 'Xóa';
+
+  @override
+  String get edit => 'Sửa';
+
+  @override
+  String get language => 'Ngôn ngữ';
+
+  @override
+  String get account => 'Tài khoản';
+
+  @override
+  String get profile => 'Hồ sơ';
+
+  @override
+  String get security => 'Bảo mật';
+
+  @override
+  String get notifications => 'Thông báo';
+
+  @override
+  String get payment_methods => 'Phương thức thanh toán';
+
+  @override
+  String get transaction_history => 'Lịch sử giao dịch';
+
+  @override
+  String get help_support => 'Trợ giúp & Hỗ trợ';
+
+  @override
+  String get settings => 'Cài đặt';
+
+  @override
+  String get logout => 'Đăng xuất';
+
+  @override
+  String get no_email_provided => 'Chưa cung cấp email';
+
+  @override
+  String get no_phone_provided => 'Chưa cung cấp số điện thoại';
+
+  @override
+  String get loading => 'Đang tải...';
+
+  @override
+  String get error => 'Lỗi';
+
+  @override
+  String get vietnamese => 'Tiếng Việt';
+
+  @override
+  String get english => 'Tiếng Anh';
+
+  @override
+  String get home => 'Trang chủ';
+
+  @override
+  String get groups => 'Nhóm hụi';
+
+  @override
+  String get theme => 'Giao diện';
+
+  @override
+  String get light_mode => 'Chế độ sáng';
+
+  @override
+  String get dark_mode => 'Chế độ tối';
+
+  @override
+  String get system_mode => 'Theo hệ thống';
+
+  @override
+  String get light_dark => 'Sáng / Tối';
 }

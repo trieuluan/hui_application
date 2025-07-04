@@ -62,7 +62,8 @@ import 'app_localizations_vi.dart';
 /// be consistent with the languages listed in the S.supportedLocales
 /// property.
 abstract class S {
-  S(String locale) : localeName = intl.Intl.canonicalizedLocale(locale.toString());
+  S(String locale)
+    : localeName = intl.Intl.canonicalizedLocale(locale.toString());
 
   final String localeName;
 
@@ -82,17 +83,18 @@ abstract class S {
   /// Additional delegates can be added by appending to this list in
   /// MaterialApp. This list does not have to be used at all if a custom list
   /// of delegates is preferred or required.
-  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates = <LocalizationsDelegate<dynamic>>[
-    delegate,
-    GlobalMaterialLocalizations.delegate,
-    GlobalCupertinoLocalizations.delegate,
-    GlobalWidgetsLocalizations.delegate,
-  ];
+  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates =
+      <LocalizationsDelegate<dynamic>>[
+        delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+      ];
 
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[
     Locale('en'),
-    Locale('vi')
+    Locale('vi'),
   ];
 
   /// No description provided for @get_start.
@@ -146,7 +148,7 @@ abstract class S {
   /// No description provided for @agreement_message.
   ///
   /// In en, this message translates to:
-  /// **'By continuing, you agree to receive calls or messages (including automated) from Hui App and its partners. Reply “STOP” at any time to unsubscribe.'**
+  /// **'By continuing, you agree to receive calls or messages (including automated) from Hui App and its partners. Reply \"STOP\" at any time to unsubscribe.'**
   String get agreement_message;
 
   /// No description provided for @recaptcha_protected.
@@ -339,7 +341,7 @@ abstract class S {
   ///
   /// In en, this message translates to:
   /// **'{fieldName} is required'**
-  String required_error(String fieldName);
+  String required_error(Object fieldName);
 
   /// No description provided for @invalid_error.
   ///
@@ -358,6 +360,222 @@ abstract class S {
   /// In en, this message translates to:
   /// **'Auto start when member full'**
   String get auto_start_when_member_full;
+
+  /// No description provided for @open_date.
+  ///
+  /// In en, this message translates to:
+  /// **'Open date'**
+  String get open_date;
+
+  /// No description provided for @time_opened.
+  ///
+  /// In en, this message translates to:
+  /// **'Time opened'**
+  String get time_opened;
+
+  /// No description provided for @cycle_time.
+  ///
+  /// In en, this message translates to:
+  /// **'Cycle time'**
+  String get cycle_time;
+
+  /// No description provided for @start_date.
+  ///
+  /// In en, this message translates to:
+  /// **'Start date'**
+  String get start_date;
+
+  /// No description provided for @end_date.
+  ///
+  /// In en, this message translates to:
+  /// **'End date'**
+  String get end_date;
+
+  /// No description provided for @choise_start_date_or_click_to_start.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose start date or click to start'**
+  String get choise_start_date_or_click_to_start;
+
+  /// No description provided for @hui_fund.
+  ///
+  /// In en, this message translates to:
+  /// **'Hui Fund'**
+  String get hui_fund;
+
+  /// No description provided for @no_groups_yet.
+  ///
+  /// In en, this message translates to:
+  /// **'No groups yet'**
+  String get no_groups_yet;
+
+  /// No description provided for @create_first_group_description.
+  ///
+  /// In en, this message translates to:
+  /// **'Create your first group to start saving and managing finances with friends and family'**
+  String get create_first_group_description;
+
+  /// No description provided for @create_new_group.
+  ///
+  /// In en, this message translates to:
+  /// **'Create new group'**
+  String get create_new_group;
+
+  /// No description provided for @refresh.
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh'**
+  String get refresh;
+
+  /// No description provided for @delete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get delete;
+
+  /// No description provided for @edit.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get edit;
+
+  /// No description provided for @language.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get language;
+
+  /// No description provided for @account.
+  ///
+  /// In en, this message translates to:
+  /// **'Account'**
+  String get account;
+
+  /// No description provided for @profile.
+  ///
+  /// In en, this message translates to:
+  /// **'Profile'**
+  String get profile;
+
+  /// No description provided for @security.
+  ///
+  /// In en, this message translates to:
+  /// **'Security'**
+  String get security;
+
+  /// No description provided for @notifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Notifications'**
+  String get notifications;
+
+  /// No description provided for @payment_methods.
+  ///
+  /// In en, this message translates to:
+  /// **'Payment Methods'**
+  String get payment_methods;
+
+  /// No description provided for @transaction_history.
+  ///
+  /// In en, this message translates to:
+  /// **'Transaction History'**
+  String get transaction_history;
+
+  /// No description provided for @help_support.
+  ///
+  /// In en, this message translates to:
+  /// **'Help & Support'**
+  String get help_support;
+
+  /// No description provided for @settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settings;
+
+  /// No description provided for @logout.
+  ///
+  /// In en, this message translates to:
+  /// **'Logout'**
+  String get logout;
+
+  /// No description provided for @no_email_provided.
+  ///
+  /// In en, this message translates to:
+  /// **'No email provided'**
+  String get no_email_provided;
+
+  /// No description provided for @no_phone_provided.
+  ///
+  /// In en, this message translates to:
+  /// **'No phone number provided'**
+  String get no_phone_provided;
+
+  /// No description provided for @loading.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading...'**
+  String get loading;
+
+  /// No description provided for @error.
+  ///
+  /// In en, this message translates to:
+  /// **'Error'**
+  String get error;
+
+  /// No description provided for @vietnamese.
+  ///
+  /// In en, this message translates to:
+  /// **'Vietnamese'**
+  String get vietnamese;
+
+  /// No description provided for @english.
+  ///
+  /// In en, this message translates to:
+  /// **'English'**
+  String get english;
+
+  /// No description provided for @home.
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get home;
+
+  /// No description provided for @groups.
+  ///
+  /// In en, this message translates to:
+  /// **'Groups'**
+  String get groups;
+
+  /// No description provided for @theme.
+  ///
+  /// In en, this message translates to:
+  /// **'Theme'**
+  String get theme;
+
+  /// No description provided for @light_mode.
+  ///
+  /// In en, this message translates to:
+  /// **'Light Mode'**
+  String get light_mode;
+
+  /// No description provided for @dark_mode.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark Mode'**
+  String get dark_mode;
+
+  /// No description provided for @system_mode.
+  ///
+  /// In en, this message translates to:
+  /// **'System Mode'**
+  String get system_mode;
+
+  /// No description provided for @light_dark.
+  ///
+  /// In en, this message translates to:
+  /// **'Light / Dark'**
+  String get light_dark;
 }
 
 class _SDelegate extends LocalizationsDelegate<S> {
@@ -369,25 +587,26 @@ class _SDelegate extends LocalizationsDelegate<S> {
   }
 
   @override
-  bool isSupported(Locale locale) => <String>['en', 'vi'].contains(locale.languageCode);
+  bool isSupported(Locale locale) =>
+      <String>['en', 'vi'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_SDelegate old) => false;
 }
 
 S lookupS(Locale locale) {
-
-
   // Lookup logic when only language code is specified.
   switch (locale.languageCode) {
-    case 'en': return SEn();
-    case 'vi': return SVi();
+    case 'en':
+      return SEn();
+    case 'vi':
+      return SVi();
   }
 
   throw FlutterError(
     'S.delegate failed to load unsupported locale "$locale". This is likely '
     'an issue with the localizations generation tool. Please file an issue '
     'on GitHub with a reproducible sample app and the gen-l10n configuration '
-    'that was used.'
+    'that was used.',
   );
 }

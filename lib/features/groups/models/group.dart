@@ -42,6 +42,7 @@ abstract class Group with _$Group {
     required double amountPerCycle,
     required int cycleDuration,
     required CycleUnit cycleUnit,
+    String? cycleTime,
 
     required int totalCycles,
     int? maxMembers,
@@ -71,6 +72,7 @@ abstract class Group with _$Group {
         (e) => e.name == formValue['cycleUnit'],
         orElse: () => CycleUnit.day,
       ),
+      cycleTime: formValue['cycleTime'],
       totalCycles: int.parse(formValue['totalCycles'].toString()),
       maxMembers: int.tryParse(formValue['maxMembers'].toString()),
       autoStart: formValue['autoStart'] as bool? ?? false,

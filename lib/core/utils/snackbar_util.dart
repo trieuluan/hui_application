@@ -5,8 +5,8 @@ void showGlobalErrorSnackBar({
   required String message,
   Duration duration = const Duration(seconds: 3),
 }) {
-  scaffoldMessengerKey.currentState!.clearSnackBars();
-  scaffoldMessengerKey.currentState!.showSnackBar(
+  scaffoldMessengerKey.currentState?.clearSnackBars();
+  scaffoldMessengerKey.currentState?.showSnackBar(
     SnackBar(
       content: Text(message),
       backgroundColor: Colors.red,
@@ -22,8 +22,8 @@ void showGlobalSuccessSnackBar({
   required String message,
   Duration duration = const Duration(seconds: 3),
 }) {
-  scaffoldMessengerKey.currentState!.clearSnackBars();
-  scaffoldMessengerKey.currentState!.showSnackBar(
+  scaffoldMessengerKey.currentState?.clearSnackBars();
+  scaffoldMessengerKey.currentState?.showSnackBar(
     SnackBar(
       content: Text(message),
       backgroundColor: Colors.green,
