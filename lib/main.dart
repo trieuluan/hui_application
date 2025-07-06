@@ -7,9 +7,6 @@ import 'package:hui_application/platform_app.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hui_application/core/utils/web_url_strategy.dart';
 
-final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
-    GlobalKey<ScaffoldMessengerState>();
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   GoRouter.optionURLReflectsImperativeAPIs = true;

@@ -4,17 +4,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:fluent_ui/fluent_ui.dart' as fluent;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hui_application/core/navigator_keys.dart';
 import 'package:hui_application/core/providers/app_loading_provider.dart';
 import 'package:hui_application/core/providers/app_locale_provider.dart';
 import 'package:hui_application/core/providers/theme_provider.dart';
 import 'package:hui_application/features/auth/models/auth_state.dart';
 import 'package:hui_application/features/auth/providers/auth_provider.dart';
 import 'package:hui_application/l10n/generated/app_localizations.dart';
-import 'package:hui_application/main.dart';
 import 'package:hui_application/routes/app_routes.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hui_application/theme/theme.dart';
 import 'package:hui_application/theme/util.dart';
+import 'package:bot_toast/bot_toast.dart';
 
 class PlatformApp extends ConsumerWidget {
   const PlatformApp({super.key});
@@ -54,7 +55,7 @@ class PlatformApp extends ConsumerWidget {
     final themeModeAsync = ref.watch(appThemeProvider);
     if (kIsWeb) {
       return MaterialApp.router(
-        scaffoldMessengerKey: scaffoldMessengerKey,
+        builder: BotToastInit(),
         debugShowCheckedModeBanner: false,
         routerConfig: router,
         theme: theme.light(),
@@ -68,6 +69,7 @@ class PlatformApp extends ConsumerWidget {
     switch (defaultTargetPlatform) {
       case TargetPlatform.iOS:
         return CupertinoApp.router(
+          builder: BotToastInit(),
           debugShowCheckedModeBanner: false,
           routerConfig: router,
           localizationsDelegates: S.localizationsDelegates,
@@ -75,6 +77,7 @@ class PlatformApp extends ConsumerWidget {
         );
       case TargetPlatform.windows:
         return fluent.FluentApp.router(
+          builder: BotToastInit(),
           debugShowCheckedModeBanner: false,
           routerConfig: router,
           localizationsDelegates: S.localizationsDelegates,
@@ -82,7 +85,7 @@ class PlatformApp extends ConsumerWidget {
         );
       default:
         return MaterialApp.router(
-          scaffoldMessengerKey: scaffoldMessengerKey,
+          builder: BotToastInit(),
           debugShowCheckedModeBanner: false,
           routerConfig: router,
           theme: theme.light(),

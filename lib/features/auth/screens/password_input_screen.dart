@@ -52,7 +52,9 @@ class _PasswordInputScreenState extends ConsumerState<PasswordInputScreen> {
         showGlobalSuccessSnackBar(message: response);
       }
     } on ApiException catch (e) {
-      showGlobalErrorSnackBar(message: e.message.toString());
+      if (context.mounted) {
+        showGlobalErrorSnackBar(message: e.message.toString());
+      }
       return;
     }
   }

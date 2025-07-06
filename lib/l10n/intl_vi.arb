@@ -79,5 +79,9 @@
     "light_mode": "Chế độ sáng",
     "dark_mode": "Chế độ tối",
     "system_mode": "Theo hệ thống",
-    "light_dark": "Sáng / Tối"
+    "light_dark": "Sáng / Tối",
+    "group_information": "Thông tin nhóm",
+    "fund_details": "Chi tiết quỹ",
+    "privacy_and_automation": "Riêng tư & Tự động hóa",
+    "save": "Lưu"
 }

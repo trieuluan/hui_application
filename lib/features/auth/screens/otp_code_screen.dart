@@ -69,10 +69,12 @@ class _OtpCodeScreenState extends ConsumerState<OtpCodeScreen> {
         .read(authNotifierProvider.notifier)
         .resendOtp(widget.emailOrPhone!);
     startCountdown(); // reset countdown sau resend
-    showGlobalSuccessSnackBar(
-      message: 'OTP code resent',
-      duration: Duration(seconds: 5),
-    );
+    if (context.mounted) {
+      showGlobalSuccessSnackBar(
+        message: 'OTP code resent',
+        duration: Duration(seconds: 5),
+      );
+    }
   }
 
   Future<void> _onCompleted(String value) async {
@@ -92,19 +94,23 @@ class _OtpCodeScreenState extends ConsumerState<OtpCodeScreen> {
         }
       } else {
         _focusNode.requestFocus();
-        showGlobalErrorSnackBar(
-          message: currentAuthState.errorMessage ?? 'Invalid OTP code',
-          duration: const Duration(seconds: 5),
-        );
+        if (context.mounted) {
+          showGlobalErrorSnackBar(
+            message: currentAuthState.errorMessage ?? 'Invalid OTP code',
+            duration: const Duration(seconds: 5),
+          );
+        }
       }
       loadingProvider.hide();
     } catch (e) {
       _focusNode.requestFocus();
       final currentAuthState = ref.read(authNotifierProvider);
-      showGlobalErrorSnackBar(
-        message: currentAuthState.errorMessage ?? 'Invalid OTP code',
-        duration: const Duration(seconds: 5),
-      );
+      if (context.mounted) {
+        showGlobalErrorSnackBar(
+          message: currentAuthState.errorMessage ?? 'Invalid OTP code',
+          duration: const Duration(seconds: 5),
+        );
+      }
       loadingProvider.hide();
       return;
     }

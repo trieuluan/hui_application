@@ -576,6 +576,30 @@ abstract class S {
   /// In en, this message translates to:
   /// **'Light / Dark'**
   String get light_dark;
+
+  /// No description provided for @group_information.
+  ///
+  /// In en, this message translates to:
+  /// **'Group Information'**
+  String get group_information;
+
+  /// No description provided for @fund_details.
+  ///
+  /// In en, this message translates to:
+  /// **'Fund Details'**
+  String get fund_details;
+
+  /// No description provided for @privacy_and_automation.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy & Automation'**
+  String get privacy_and_automation;
+
+  /// No description provided for @save.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get save;
 }
 
 class _SDelegate extends LocalizationsDelegate<S> {

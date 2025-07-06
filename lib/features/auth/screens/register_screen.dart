@@ -201,10 +201,12 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                       }
                     } on ApiException catch (e) {
                       // Show the error and suggestions in the snackbar
-                      showGlobalErrorSnackBar(
-                        message: e.message.toString(),
-                        duration: const Duration(seconds: 5),
-                      );
+                      if (context.mounted) {
+                        showGlobalErrorSnackBar(
+                          message: e.message.toString(),
+                          duration: const Duration(seconds: 5),
+                        );
+                      }
                     }
                   } else {
                     form.markAllAsTouched();
@@ -216,7 +218,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
               const Text.rich(
                 TextSpan(
                   text:
-                      'By continuing, you agree that you have read and understood Bookify’s ',
+                      'By continuing, you agree that you have read and understood Bookify\'s ',
                   style: TextStyle(color: Colors.black54),
                   children: [
                     TextSpan(

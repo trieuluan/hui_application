@@ -75,6 +75,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Enter your Password",
     ),
     "error": MessageLookupByLibrary.simpleMessage("Error"),
+    "fund_details": MessageLookupByLibrary.simpleMessage("Fund Details"),
     "get_start": MessageLookupByLibrary.simpleMessage(
       "Get started with\nHui Fund",
     ),
@@ -82,6 +83,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "google_terms": MessageLookupByLibrary.simpleMessage("Terms"),
     "group_created_successfully": MessageLookupByLibrary.simpleMessage(
       "Group created successfully",
+    ),
+    "group_information": MessageLookupByLibrary.simpleMessage(
+      "Group Information",
     ),
     "groups": MessageLookupByLibrary.simpleMessage("Groups"),
     "help_support": MessageLookupByLibrary.simpleMessage("Help & Support"),
@@ -139,6 +143,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "phone_placeholder": MessageLookupByLibrary.simpleMessage(
       "Enter phone number",
     ),
+    "privacy_and_automation": MessageLookupByLibrary.simpleMessage(
+      "Privacy & Automation",
+    ),
     "private_group": MessageLookupByLibrary.simpleMessage("Private group"),
     "profile": MessageLookupByLibrary.simpleMessage("Profile"),
     "recaptcha_protected": MessageLookupByLibrary.simpleMessage(
@@ -147,6 +154,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "refresh": MessageLookupByLibrary.simpleMessage("Refresh"),
     "required_error": m1,
     "resend_code": MessageLookupByLibrary.simpleMessage("Resend code"),
+    "save": MessageLookupByLibrary.simpleMessage("Save"),
     "security": MessageLookupByLibrary.simpleMessage("Security"),
     "settings": MessageLookupByLibrary.simpleMessage("Settings"),
     "start_date": MessageLookupByLibrary.simpleMessage("Start date"),

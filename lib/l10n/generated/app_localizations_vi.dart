@@ -255,4 +255,16 @@ class SVi extends S {
 
   @override
   String get light_dark => 'Sáng / Tối';
+
+  @override
+  String get group_information => 'Thông tin nhóm';
+
+  @override
+  String get fund_details => 'Chi tiết quỹ';
+
+  @override
+  String get privacy_and_automation => 'Riêng tư & Tự động hóa';
+
+  @override
+  String get save => 'Lưu';
 }

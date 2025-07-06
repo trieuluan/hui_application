@@ -73,12 +73,14 @@ class MessageLookup extends MessageLookupByLibrary {
       "Nhập mật khẩu của bạn",
     ),
     "error": MessageLookupByLibrary.simpleMessage("Lỗi"),
+    "fund_details": MessageLookupByLibrary.simpleMessage("Chi tiết quỹ"),
     "get_start": MessageLookupByLibrary.simpleMessage("Bắt đầu với\nHui Fund"),
     "google_policy": MessageLookupByLibrary.simpleMessage("Chính sách"),
     "google_terms": MessageLookupByLibrary.simpleMessage("Điều khoản"),
     "group_created_successfully": MessageLookupByLibrary.simpleMessage(
       "Nhóm Hụi đã được tạo thành công",
     ),
+    "group_information": MessageLookupByLibrary.simpleMessage("Thông tin nhóm"),
     "groups": MessageLookupByLibrary.simpleMessage("Nhóm hụi"),
     "help_support": MessageLookupByLibrary.simpleMessage("Trợ giúp & Hỗ trợ"),
     "home": MessageLookupByLibrary.simpleMessage("Trang chủ"),
@@ -141,6 +143,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "phone_placeholder": MessageLookupByLibrary.simpleMessage(
       "Nhập số điện thoại",
     ),
+    "privacy_and_automation": MessageLookupByLibrary.simpleMessage(
+      "Riêng tư & Tự động hóa",
+    ),
     "private_group": MessageLookupByLibrary.simpleMessage("Nhóm riêng tư"),
     "profile": MessageLookupByLibrary.simpleMessage("Hồ sơ"),
     "recaptcha_protected": MessageLookupByLibrary.simpleMessage(
@@ -149,6 +154,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "refresh": MessageLookupByLibrary.simpleMessage("Làm mới"),
     "required_error": m1,
     "resend_code": MessageLookupByLibrary.simpleMessage("Gửi lại mã"),
+    "save": MessageLookupByLibrary.simpleMessage("Lưu"),
     "security": MessageLookupByLibrary.simpleMessage("Bảo mật"),
     "settings": MessageLookupByLibrary.simpleMessage("Cài đặt"),
     "start_date": MessageLookupByLibrary.simpleMessage("Ngày bắt đầu"),

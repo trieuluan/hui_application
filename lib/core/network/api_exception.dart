@@ -39,6 +39,8 @@ class ApiException extends DioException {
                 requestOptions: error.requestOptions,
               );
             } else if (data is Map<String, dynamic>) {
+              print('data: $data');
+              print(_extractErrorMessage(data));
               return ApiException(
                 message:
                     _extractErrorMessage(data) ?? 'Bad response from server',
@@ -101,7 +103,7 @@ String? _extractErrorMessage(Map<String, dynamic>? data) {
     buffer.writeln(data['error']);
   }
 
-  if (data['warning'].isNotEmpty == true) {
+  if (data['warning']?.isNotEmpty == true) {
     buffer.writeln('${data['warning']}');
   }
 
@@ -111,7 +113,6 @@ String? _extractErrorMessage(Map<String, dynamic>? data) {
       buffer.writeln('• $suggestion');
     }
   }
-
   if (buffer.isNotEmpty) return buffer.toString().trim();
 
   return data['message'];

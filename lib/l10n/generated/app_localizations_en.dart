@@ -254,4 +254,16 @@ class SEn extends S {
 
   @override
   String get light_dark => 'Light / Dark';
+
+  @override
+  String get group_information => 'Group Information';
+
+  @override
+  String get fund_details => 'Fund Details';
+
+  @override
+  String get privacy_and_automation => 'Privacy & Automation';
+
+  @override
+  String get save => 'Save';
 }

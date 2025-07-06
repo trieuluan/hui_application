@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hui_application/core/guards/auth_guard.dart';
 import 'package:hui_application/core/navigator_keys.dart';
 import 'package:hui_application/features/account/screens/account_screen.dart';
+import 'package:hui_application/features/account/screens/settings_screen.dart';
 import 'package:hui_application/features/auth/screens/login_screen.dart';
 import 'package:hui_application/features/auth/screens/otp_code_screen.dart';
 import 'package:hui_application/features/auth/screens/password_input_screen.dart';
@@ -153,6 +154,10 @@ final routerProvider = Provider<GoRouter>((ref) {
             ],
           ),
         ],
+      ),
+      GoRoute(
+        path: '/settings',
+        builder: (context, state) => const SettingsScreen(),
       ),
     ],
   );

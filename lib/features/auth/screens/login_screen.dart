@@ -6,9 +6,9 @@ import 'package:go_router/go_router.dart';
 import 'package:hui_application/core/network/api_exception.dart';
 import 'package:hui_application/features/auth/models/auth_state.dart';
 import 'package:hui_application/features/auth/providers/auth_provider.dart';
-import 'package:hui_application/gen/assets.gen.dart';
 import 'package:hui_application/l10n/generated/app_localizations.dart';
 import 'package:hui_application/widgets/animated_loading_button.dart';
+import 'package:hui_application/widgets/app_logo.dart';
 import 'package:hui_application/widgets/app_text_field.dart';
 import 'package:hui_application/core/utils/snackbar_util.dart';
 import 'package:hui_application/core/validators/validators.dart';
@@ -85,6 +85,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final authState = ref.watch(authNotifierProvider);
+
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -95,7 +96,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 const SizedBox(height: 40),
-                Image.asset(Assets.logoHui.path, width: 80),
+                AppLogo(),
                 const SizedBox(height: 24),
                 Text(
                   S.of(context)!.get_start,
@@ -162,10 +163,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               }
                               authNotifier.hideLoading();
                             } on ApiException catch (e) {
-                              showGlobalErrorSnackBar(
-                                message: e.message.toString(),
-                                duration: const Duration(seconds: 5),
-                              );
+                              if (context.mounted) {
+                                showGlobalErrorSnackBar(
+                                  message: e.message.toString(),
+                                  duration: const Duration(seconds: 5),
+                                );
+                              }
                             }
                           }
                           : null,
@@ -185,7 +188,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 const SizedBox(height: 16),
                 SizedBox(
                   width: double.infinity,
-                  height: 48,
                   child: ElevatedButton.icon(
                     style: ElevatedButton.styleFrom(
                       foregroundColor:
@@ -204,15 +206,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 const SizedBox(height: 12),
                 SizedBox(
                   width: double.infinity,
-                  height: 48,
                   child: ElevatedButton.icon(
                     style: ElevatedButton.styleFrom(
                       foregroundColor:
                           Theme.of(context).colorScheme.onSurfaceVariant,
                       backgroundColor: Theme.of(context).colorScheme.surfaceDim,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(48 / 2),
-                      ),
                     ),
                     icon: const Icon(
                       FontAwesomeIcons.google,

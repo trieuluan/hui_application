@@ -79,5 +79,9 @@
     "light_mode": "Light Mode",
     "dark_mode": "Dark Mode",
     "system_mode": "System Mode",
-    "light_dark": "Light / Dark"
+    "light_dark": "Light / Dark",
+    "group_information": "Group Information",
+    "fund_details": "Fund Details",
+    "privacy_and_automation": "Privacy & Automation",
+    "save": "Save"
 }

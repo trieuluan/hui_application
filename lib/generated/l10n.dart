@@ -658,6 +658,41 @@ class S {
   String get light_dark {
     return Intl.message('Light / Dark', name: 'light_dark', desc: '', args: []);
   }
+
+  /// `Group Information`
+  String get group_information {
+    return Intl.message(
+      'Group Information',
+      name: 'group_information',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Fund Details`
+  String get fund_details {
+    return Intl.message(
+      'Fund Details',
+      name: 'fund_details',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Privacy & Automation`
+  String get privacy_and_automation {
+    return Intl.message(
+      'Privacy & Automation',
+      name: 'privacy_and_automation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Save`
+  String get save {
+    return Intl.message('Save', name: 'save', desc: '', args: []);
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
