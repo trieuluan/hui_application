@@ -72,6 +72,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "enter_password": MessageLookupByLibrary.simpleMessage(
       "Nhập mật khẩu của bạn",
     ),
+    "enter_phone_number_to_continue": MessageLookupByLibrary.simpleMessage(
+      "Nhập số điện thoại để tiếp tục",
+    ),
     "error": MessageLookupByLibrary.simpleMessage("Lỗi"),
     "fund_details": MessageLookupByLibrary.simpleMessage("Chi tiết quỹ"),
     "get_start": MessageLookupByLibrary.simpleMessage("Bắt đầu với\nHui Fund"),
@@ -173,6 +176,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "vietnamese": MessageLookupByLibrary.simpleMessage("Tiếng Việt"),
     "week": MessageLookupByLibrary.simpleMessage("Tuần"),
+    "welcome_to_hui_fund": MessageLookupByLibrary.simpleMessage(
+      "Chào mừng đến với Hui Fund",
+    ),
     "year": MessageLookupByLibrary.simpleMessage("Năm"),
   };
 }

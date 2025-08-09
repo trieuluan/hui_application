@@ -21,6 +21,8 @@ _User _$UserFromJson(Map<String, dynamic> json) => _User(
           ? null
           : Kyc.fromJson(json['kyc'] as Map<String, dynamic>),
   status: json['status'] as String?,
+  permissions:
+      (json['permissions'] as List<dynamic>?)?.map((e) => e as String).toList(),
   createdAt:
       json['created_at'] == null
           ? null
@@ -40,6 +42,7 @@ Map<String, dynamic> _$UserToJson(_User instance) => <String, dynamic>{
   'profile': instance.profile,
   'kyc': instance.kyc,
   'status': instance.status,
+  'permissions': instance.permissions,
   'created_at': instance.createdAt?.toIso8601String(),
   'updated_at': instance.updatedAt?.toIso8601String(),
 };
@@ -78,3 +81,44 @@ Map<String, dynamic> _$KycToJson(_Kyc instance) => <String, dynamic>{
   'selfie_url': instance.selfieUrl,
   'verified_at': instance.verifiedAt?.toIso8601String(),
 };
+
+_Permissions _$PermissionsFromJson(Map<String, dynamic> json) => _Permissions(
+  canCreateGroup: json['canCreateGroup'] as bool? ?? false,
+  canJoinGroup: json['canJoinGroup'] as bool? ?? false,
+  canInviteMembers: json['canInviteMembers'] as bool? ?? false,
+  canRemoveMembers: json['canRemoveMembers'] as bool? ?? false,
+  canManageGroupSettings: json['canManageGroupSettings'] as bool? ?? false,
+  canViewGroupDetails: json['canViewGroupDetails'] as bool? ?? false,
+  canMakePayments: json['canMakePayments'] as bool? ?? false,
+  canViewPayments: json['canViewPayments'] as bool? ?? false,
+  canManageKyc: json['canManageKyc'] as bool? ?? false,
+  canViewReports: json['canViewReports'] as bool? ?? false,
+  canDeleteGroup: json['canDeleteGroup'] as bool? ?? false,
+  canEditGroup: json['canEditGroup'] as bool? ?? false,
+  canApproveJoinRequests: json['canApproveJoinRequests'] as bool? ?? false,
+  canRejectJoinRequests: json['canRejectJoinRequests'] as bool? ?? false,
+  canViewAllGroups: json['canViewAllGroups'] as bool? ?? false,
+  canManageUsers: json['canManageUsers'] as bool? ?? false,
+  canViewAdminPanel: json['canViewAdminPanel'] as bool? ?? false,
+);
+
+Map<String, dynamic> _$PermissionsToJson(_Permissions instance) =>
+    <String, dynamic>{
+      'canCreateGroup': instance.canCreateGroup,
+      'canJoinGroup': instance.canJoinGroup,
+      'canInviteMembers': instance.canInviteMembers,
+      'canRemoveMembers': instance.canRemoveMembers,
+      'canManageGroupSettings': instance.canManageGroupSettings,
+      'canViewGroupDetails': instance.canViewGroupDetails,
+      'canMakePayments': instance.canMakePayments,
+      'canViewPayments': instance.canViewPayments,
+      'canManageKyc': instance.canManageKyc,
+      'canViewReports': instance.canViewReports,
+      'canDeleteGroup': instance.canDeleteGroup,
+      'canEditGroup': instance.canEditGroup,
+      'canApproveJoinRequests': instance.canApproveJoinRequests,
+      'canRejectJoinRequests': instance.canRejectJoinRequests,
+      'canViewAllGroups': instance.canViewAllGroups,
+      'canManageUsers': instance.canManageUsers,
+      'canViewAdminPanel': instance.canViewAdminPanel,
+    };

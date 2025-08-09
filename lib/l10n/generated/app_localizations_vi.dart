@@ -267,4 +267,10 @@ class SVi extends S {
 
   @override
   String get save => 'Lưu';
+
+  @override
+  String get welcome_to_hui_fund => 'Chào mừng đến với Hui Fund';
+
+  @override
+  String get enter_phone_number_to_continue => 'Nhập số điện thoại để tiếp tục';
 }

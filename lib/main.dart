@@ -6,6 +6,7 @@ import 'package:hui_application/firebase_options.dart';
 import 'package:hui_application/platform_app.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hui_application/core/utils/web_url_strategy.dart';
+import 'package:hui_application/core/services/error_handler_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -13,5 +14,9 @@ void main() async {
   await init();
   configureAppUrlStrategy();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  // Set up error handling
+  ErrorHandlerService.setupErrorHandling();
+
   runApp(const ProviderScope(child: PlatformApp()));
 }

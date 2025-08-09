@@ -7,6 +7,7 @@ void showGlobalErrorSnackBar({
   Duration duration = const Duration(seconds: 4),
   String? title,
 }) {
+  BotToast.cleanAll(); // Clear tất cả toast cũ
   BotToast.showAnimationWidget(
     toastBuilder:
         (cancelFunc) => SafeArea(
@@ -32,6 +33,7 @@ void showGlobalSuccessSnackBar({
   Duration duration = const Duration(seconds: 4),
   String? title,
 }) {
+  BotToast.cleanAll(); // Clear tất cả toast cũ
   BotToast.showAnimationWidget(
     toastBuilder:
         (cancelFunc) => SafeArea(
@@ -57,6 +59,7 @@ void showGlobalInfoSnackBar({
   Duration duration = const Duration(seconds: 4),
   String? title,
 }) {
+  BotToast.cleanAll(); // Clear tất cả toast cũ
   BotToast.showAnimationWidget(
     toastBuilder:
         (cancelFunc) => SafeArea(
@@ -82,6 +85,7 @@ void showGlobalWarningSnackBar({
   Duration duration = const Duration(seconds: 4),
   String? title,
 }) {
+  BotToast.cleanAll(); // Clear tất cả toast cũ
   BotToast.showAnimationWidget(
     toastBuilder:
         (cancelFunc) => SafeArea(

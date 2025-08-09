@@ -319,10 +319,6 @@ class _GroupScreenState extends ConsumerState<GroupScreen> {
     Group groupData,
     ThemeData theme,
   ) {
-    if (groupData == null) {
-      return const Center(child: Text('Không có dữ liệu'));
-    }
-
     switch (selectedTab) {
       case 'overview':
         return GroupScreenOverview(group: groupData);

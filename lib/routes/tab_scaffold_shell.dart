@@ -49,6 +49,11 @@ class _TabScaffoldShellState extends State<TabScaffoldShell> {
                 label: S.of(context)!.groups,
               ),
               BottomNavigationBarItem(
+                icon: const Icon(Icons.explore_outlined),
+                activeIcon: const Icon(Icons.explore),
+                label: 'Khám phá',
+              ),
+              BottomNavigationBarItem(
                 icon: const Icon(Icons.person_outline),
                 activeIcon: const Icon(Icons.person),
                 label: S.of(context)!.account,

@@ -6,3 +6,5 @@ final GlobalKey<NavigatorState> accountNavigatorKey =
     GlobalKey<NavigatorState>();
 final GlobalKey<NavigatorState> groupsNavigatorKey =
     GlobalKey<NavigatorState>();
+final GlobalKey<NavigatorState> discoveryNavigatorKey =
+    GlobalKey<NavigatorState>();

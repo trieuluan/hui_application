@@ -1,4 +1,7 @@
 import 'dart:async';
+import 'dart:io';
+import 'package:flutter/foundation.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hui_application/core/network/api_exception.dart';
@@ -63,6 +66,7 @@ class AuthNotifier extends _$AuthNotifier {
         emailOrPhone: emailOrPhone,
         password: password,
       );
+
       if (result != null) {
         final token = result['token'];
         final user = app_model.User.fromJson(result['user']);
@@ -70,7 +74,7 @@ class AuthNotifier extends _$AuthNotifier {
         await TokenService.saveToken(token);
         await TokenService.saveUser(user.toJson());
         state = AuthState.authenticated(token: token, user: user);
-        return result['message'];
+        return result;
       } else {
         state = AuthState.unauthenticated();
         return false;
@@ -134,8 +138,48 @@ class AuthNotifier extends _$AuthNotifier {
       final isAvailable = await authService.checkAvailability(
         emailOrPhone: emailOrPhone,
       );
-      print('isAvailable: $isAvailable');
       return isAvailable;
+    } catch (e) {
+      state = AuthState.error(e.toString());
+      rethrow;
+    }
+  }
+
+  Future<Map<String, dynamic>?> checkPassword({
+    required String emailOrPhone,
+    required String password,
+  }) async {
+    try {
+      final authService = ref.read(authServiceProvider);
+      final result = await authService.checkPassword(
+        emailOrPhone: emailOrPhone,
+        password: password,
+      );
+      return result;
+    } catch (e) {
+      state = AuthState.error(e.toString());
+      rethrow;
+    }
+  }
+
+  Future<Map<String, dynamic>?> checkPasswordStrength(String password) async {
+    try {
+      final authService = ref.read(authServiceProvider);
+      final result = await authService.checkPasswordStrength(
+        password: password,
+      );
+      return result;
+    } catch (e) {
+      state = AuthState.error(e.toString());
+      rethrow;
+    }
+  }
+
+  Future<Map<String, dynamic>?> getPasswordConfig() async {
+    try {
+      final authService = ref.read(authServiceProvider);
+      final result = await authService.getPasswordConfig();
+      return result;
     } catch (e) {
       state = AuthState.error(e.toString());
       rethrow;
@@ -144,14 +188,26 @@ class AuthNotifier extends _$AuthNotifier {
 
   Future<void> sendOtp(String phoneNumber) async {
     try {
+      final isIOS = Platform.isIOS;
+      final isSimulator = await _isSimulator();
+      if (isIOS && isSimulator) {
+        _verificationId = 'mock_verification_id';
+        saveVerificationId(_verificationId!);
+        state = const AuthState.otpSent();
+        return;
+      }
       await _auth.verifyPhoneNumber(
         phoneNumber: phoneNumber,
         timeout: const Duration(seconds: 60),
-        verificationCompleted: (PhoneAuthCredential credential) async {
-          // Bạn có thể tự động sign in ở đây nếu cần (hoặc bỏ qua)
-        },
+        verificationCompleted: (PhoneAuthCredential credential) async {},
         verificationFailed: (FirebaseAuthException e) {
-          state = AuthState.error('Verification failed: ${e.message}');
+          if (e.code == 'invalid-phone-number') {
+            state = AuthState.error('Số điện thoại không hợp lệ');
+          } else if (e.code == 'too-many-requests') {
+            state = AuthState.error('Quá nhiều yêu cầu. Vui lòng thử lại sau');
+          } else {
+            state = AuthState.error('Xác thực thất bại: ${e.message}');
+          }
         },
         codeSent: (String verificationId, int? resendToken) {
           _verificationId = verificationId;
@@ -164,8 +220,34 @@ class AuthNotifier extends _$AuthNotifier {
         },
       );
     } catch (e) {
-      print('Error sending OTP: $e');
-      state = AuthState.error('Failed to send OTP: ${e.toString()}');
+      if (e.toString().contains('APNs') ||
+          e.toString().contains('push notification')) {
+        state = AuthState.error(
+          'Lỗi cấu hình push notification. Vui lòng kiểm tra APNs settings.',
+        );
+      } else {
+        state = AuthState.error('Không thể gửi OTP: ${e.toString()}');
+      }
+    }
+  }
+
+  // Check if running on simulator
+  Future<bool> _isSimulator() async {
+    try {
+      final deviceInfo = DeviceInfoPlugin();
+
+      if (Platform.isIOS) {
+        final iosInfo = await deviceInfo.iosInfo;
+        // iOS simulator has specific identifiers
+        return iosInfo.name.contains('Simulator') ||
+            iosInfo.model.contains('Simulator') ||
+            iosInfo.systemName.contains('Simulator');
+      }
+
+      return false;
+    } catch (e) {
+      // Fallback to debug mode check
+      return kDebugMode;
     }
   }
 
@@ -176,6 +258,19 @@ class AuthNotifier extends _$AuthNotifier {
         throw Exception('Verification ID not found');
       }
 
+      // Check if running on iOS simulator
+      final isIOS = Platform.isIOS;
+      final isSimulator = await _isSimulator();
+
+      if (isIOS && isSimulator && _verificationId == 'mock_verification_id') {
+        // Mock OTP validation for iOS simulator
+        // Accept any OTP code for testing purposes
+        state = const AuthState.otpVerified();
+        await clearVerificationId();
+        return true;
+      }
+
+      // Real OTP validation for actual devices
       final credential = PhoneAuthProvider.credential(
         verificationId: _verificationId!,
         smsCode: otp,
@@ -183,7 +278,6 @@ class AuthNotifier extends _$AuthNotifier {
 
       final result = await _auth.signInWithCredential(credential);
       if (result.user != null) {
-        // Xác thực thành công
         state = const AuthState.otpVerified();
         await FirebaseAuth.instance.signOut();
         await clearVerificationId();

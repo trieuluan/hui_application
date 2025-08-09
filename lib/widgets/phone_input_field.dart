@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_libphonenumber/flutter_libphonenumber.dart';
 import 'package:hui_application/l10n/generated/app_localizations.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
@@ -39,7 +40,7 @@ class PhoneInputFieldState extends State<PhoneInputField> {
     init();
     _internalController = widget.controller ?? TextEditingController();
     _internalFocusNode = widget.focusNode ?? FocusNode();
-    
+
     final defaultCountry = CountryManager().countries.firstWhere(
       (country) => country.countryCode == 'VN',
       orElse: () => CountryManager().countries.first,
@@ -51,10 +52,26 @@ class PhoneInputFieldState extends State<PhoneInputField> {
   Future<String?> validatePhone(PhoneNumber? phone) async {
     try {
       if (phone!.completeNumber.isEmpty) {
-        _errorText = S.of(context)!.phone_number_cannot_be_empty;
+        setState(() {
+          _errorText = S.of(context)!.phone_number_cannot_be_empty;
+        });
+        return _errorText;
       }
+
+      // Check if phone number contains only digits and valid characters
+      final phoneNumberOnly = phone.completeNumber.replaceAll(
+        RegExp(r'[^\d+]'),
+        '',
+      );
+      if (phoneNumberOnly != phone.completeNumber) {
+        setState(() {
+          _errorText = S.of(context)!.phone_number_error;
+        });
+        return _errorText;
+      }
+
       final parsed = await parse(phone.completeNumber);
-      final isValid = parsed['type'] != null;
+      final isValid = parsed['type'] != null && parsed['type'] == 'mobile';
 
       setState(() {
         _errorText = isValid ? null : S.of(context)!.phone_number_error;
@@ -76,6 +93,9 @@ class PhoneInputFieldState extends State<PhoneInputField> {
       focusNode: _internalFocusNode,
       autovalidateMode: AutovalidateMode.onUserInteraction,
       disableLengthCheck: true,
+      inputFormatters: [
+        FilteringTextInputFormatter.allow(RegExp(r'[0-9+\-\(\)\s]')),
+      ],
       decoration: InputDecoration(
         labelText: widget.labelText ?? S.of(context)!.phone_placeholder,
         errorText: _errorText,

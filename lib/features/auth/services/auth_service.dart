@@ -68,6 +68,44 @@ class AuthService {
     }
   }
 
+  Future<Map<String, dynamic>?> checkPassword({
+    required String emailOrPhone,
+    required String password,
+  }) async {
+    try {
+      final response = await _api.post(
+        Endpoints.checkPassword,
+        data: {'emailOrPhone': emailOrPhone, 'password': password},
+      );
+      return response.data;
+    } on ApiException {
+      rethrow;
+    }
+  }
+
+  Future<Map<String, dynamic>?> checkPasswordStrength({
+    required String password,
+  }) async {
+    try {
+      final response = await _api.post(
+        Endpoints.checkPasswordStrength,
+        data: {'password': password},
+      );
+      return response.data;
+    } on ApiException {
+      rethrow;
+    }
+  }
+
+  Future<Map<String, dynamic>?> getPasswordConfig() async {
+    try {
+      final response = await _api.get(Endpoints.passwordConfig);
+      return response.data;
+    } on ApiException {
+      rethrow;
+    }
+  }
+
   Future<void> logout() async {
     try {
       await _api.post(Endpoints.logout);

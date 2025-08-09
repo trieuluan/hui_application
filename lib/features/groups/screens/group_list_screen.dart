@@ -6,7 +6,10 @@ import 'package:hui_application/core/utils/date_time_extension.dart';
 import 'package:hui_application/core/utils/num_extension.dart';
 import 'package:hui_application/core/utils/snackbar_util.dart';
 import 'package:hui_application/core/utils/string_extension.dart';
+import 'package:hui_application/features/auth/models/auth_state.dart';
+import 'package:hui_application/features/auth/providers/auth_provider.dart';
 import 'package:hui_application/features/groups/models/group.dart';
+import 'package:hui_application/models/users.dart';
 import 'package:hui_application/features/groups/providers/group_provider.dart';
 import 'package:hui_application/features/groups/providers/group_state.dart';
 import 'package:hui_application/l10n/generated/app_localizations.dart';
@@ -53,6 +56,8 @@ class _GroupListScreenState extends ConsumerState<GroupListScreen> {
   Widget _buildEmptyState() {
     final l10n = S.of(context)!;
     final theme = Theme.of(context);
+    final isOwner = _canCreateGroups();
+
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(32.0),
@@ -74,14 +79,14 @@ class _GroupListScreenState extends ConsumerState<GroupListScreen> {
                 ],
               ),
               child: Icon(
-                CupertinoIcons.group_solid,
+                isOwner ? CupertinoIcons.group_solid : Icons.group_outlined,
                 size: 64,
                 color: theme.colorScheme.primary,
               ),
             ),
             const SizedBox(height: 28),
             Text(
-              l10n.no_groups_yet,
+              isOwner ? 'Chưa có hụi nào' : 'Chưa tham gia hụi nào',
               style: theme.textTheme.titleLarge?.copyWith(
                 fontWeight: FontWeight.bold,
                 color: theme.colorScheme.onSurface,
@@ -90,7 +95,9 @@ class _GroupListScreenState extends ConsumerState<GroupListScreen> {
             ),
             const SizedBox(height: 14),
             Text(
-              l10n.create_first_group_description,
+              isOwner
+                  ? 'Tạo hụi đầu tiên để bắt đầu quản lý nhóm hụi của bạn'
+                  : 'Tham gia hụi từ trang Khám phá để bắt đầu',
               style: theme.textTheme.bodyMedium?.copyWith(
                 color: theme.colorScheme.onSurfaceVariant,
                 height: 1.5,
@@ -98,28 +105,53 @@ class _GroupListScreenState extends ConsumerState<GroupListScreen> {
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 36),
-            ElevatedButton.icon(
-              onPressed: () {
-                context.push('/groups/create');
-              },
-              icon: const Icon(Icons.add, size: 20),
-              label: Text(
-                l10n.create_new_group,
-                style: const TextStyle(fontWeight: FontWeight.w600),
-              ),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: theme.colorScheme.primary,
-                foregroundColor: theme.colorScheme.onPrimary,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 32,
-                  vertical: 16,
+            if (isOwner)
+              ElevatedButton.icon(
+                onPressed: () {
+                  context.push('/groups/create');
+                },
+                icon: const Icon(Icons.add, size: 20),
+                label: const Text(
+                  'Tạo hụi mới',
+                  style: TextStyle(fontWeight: FontWeight.w600),
                 ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(14),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: theme.colorScheme.primary,
+                  foregroundColor: theme.colorScheme.onPrimary,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 32,
+                    vertical: 16,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                  elevation: 2,
                 ),
-                elevation: 2,
+              )
+            else
+              ElevatedButton.icon(
+                onPressed: () {
+                  // Navigate to discovery tab
+                  context.go('/discovery');
+                },
+                icon: const Icon(Icons.explore, size: 20),
+                label: const Text(
+                  'Khám phá hụi',
+                  style: TextStyle(fontWeight: FontWeight.w600),
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: theme.colorScheme.primary,
+                  foregroundColor: theme.colorScheme.onPrimary,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 32,
+                    vertical: 16,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                  elevation: 2,
+                ),
               ),
-            ),
             const SizedBox(height: 18),
             TextButton.icon(
               onPressed: _fetchGroups,
@@ -135,6 +167,12 @@ class _GroupListScreenState extends ConsumerState<GroupListScreen> {
     );
   }
 
+  bool _canCreateGroups() {
+    final user = ref.read(authNotifierProvider).user;
+    if (user == null) return false;
+    return user.userPermissions.canCreateGroup;
+  }
+
   @override
   Widget build(BuildContext context) {
     final groupState = ref.watch(groupNotifierProvider);
@@ -144,7 +182,7 @@ class _GroupListScreenState extends ConsumerState<GroupListScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(S.of(context)!.hui_fund),
+        title: Text(_canCreateGroups() ? 'Quản lý hụi' : 'Hụi của tôi'),
         centerTitle: true,
         elevation: 0.5,
         backgroundColor: theme.colorScheme.surface,
@@ -152,14 +190,19 @@ class _GroupListScreenState extends ConsumerState<GroupListScreen> {
           IconButton(icon: const Icon(Icons.refresh), onPressed: _fetchGroups),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => context.push('/groups/create'),
-        backgroundColor: theme.colorScheme.primary,
-        foregroundColor: theme.colorScheme.onPrimary,
-        elevation: 4,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
-        child: const Icon(Icons.add),
-      ),
+      floatingActionButton:
+          _canCreateGroups()
+              ? FloatingActionButton(
+                onPressed: () => context.push('/groups/create'),
+                backgroundColor: theme.colorScheme.primary,
+                foregroundColor: theme.colorScheme.onPrimary,
+                elevation: 4,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(100),
+                ),
+                child: const Icon(Icons.add),
+              )
+              : null,
       body:
           isLoading
               ? const Center(child: CircularProgressIndicator())

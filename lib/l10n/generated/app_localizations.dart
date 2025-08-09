@@ -600,6 +600,18 @@ abstract class S {
   /// In en, this message translates to:
   /// **'Save'**
   String get save;
+
+  /// No description provided for @welcome_to_hui_fund.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome to Hui Fund'**
+  String get welcome_to_hui_fund;
+
+  /// No description provided for @enter_phone_number_to_continue.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter phone number to continue'**
+  String get enter_phone_number_to_continue;
 }
 
 class _SDelegate extends LocalizationsDelegate<S> {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 
 class MaterialTheme {
   final TextTheme textTheme;
@@ -109,4 +110,71 @@ class MaterialTheme {
       type: BottomNavigationBarType.fixed,
     ),
   );
+}
+
+// AppCupertinoTheme cho iOS
+class AppCupertinoTheme {
+  static CupertinoThemeData light() => _cupertinoTheme(Brightness.light);
+  static CupertinoThemeData dark() => _cupertinoTheme(Brightness.dark);
+
+  static CupertinoThemeData _cupertinoTheme(Brightness brightness) {
+    final isLight = brightness == Brightness.light;
+
+    return CupertinoThemeData(
+      brightness: brightness,
+      primaryColor: const Color(0xFF009688), // Teal color
+      primaryContrastingColor: CupertinoColors.white,
+
+      // Text theme
+      textTheme: CupertinoTextThemeData(
+        primaryColor: const Color(0xFF009688),
+        textStyle: TextStyle(
+          color: isLight ? CupertinoColors.black : CupertinoColors.white,
+          fontSize: 16,
+        ),
+        actionTextStyle: TextStyle(
+          color: const Color(0xFF009688),
+          fontSize: 16,
+          fontWeight: FontWeight.w600,
+        ),
+        tabLabelTextStyle: TextStyle(
+          color:
+              isLight
+                  ? CupertinoColors.systemGrey
+                  : CupertinoColors.systemGrey2,
+          fontSize: 10,
+        ),
+        navTitleTextStyle: TextStyle(
+          color: isLight ? CupertinoColors.black : CupertinoColors.white,
+          fontSize: 18,
+          fontWeight: FontWeight.w600,
+        ),
+        navLargeTitleTextStyle: TextStyle(
+          color: isLight ? CupertinoColors.black : CupertinoColors.white,
+          fontSize: 34,
+          fontWeight: FontWeight.w700,
+        ),
+        pickerTextStyle: TextStyle(
+          color: isLight ? CupertinoColors.black : CupertinoColors.white,
+          fontSize: 20,
+        ),
+        dateTimePickerTextStyle: TextStyle(
+          color: isLight ? CupertinoColors.black : CupertinoColors.white,
+          fontSize: 20,
+        ),
+      ),
+
+      // Bar theme
+      barBackgroundColor:
+          isLight
+              ? CupertinoColors.systemBackground
+              : CupertinoColors.systemBackground.darkColor,
+
+      // Scaffold background
+      scaffoldBackgroundColor:
+          isLight
+              ? CupertinoColors.systemGroupedBackground
+              : CupertinoColors.systemGroupedBackground.darkColor,
+    );
+  }
 }

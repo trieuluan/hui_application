@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:fluent_ui/fluent_ui.dart' as fluent;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:hui_application/core/navigator_keys.dart';
 import 'package:hui_application/core/providers/app_loading_provider.dart';
 import 'package:hui_application/core/providers/app_locale_provider.dart';
 import 'package:hui_application/core/providers/theme_provider.dart';
@@ -72,8 +71,10 @@ class PlatformApp extends ConsumerWidget {
           builder: BotToastInit(),
           debugShowCheckedModeBanner: false,
           routerConfig: router,
+          theme: _getCupertinoTheme(themeModeAsync),
           localizationsDelegates: S.localizationsDelegates,
           supportedLocales: S.supportedLocales,
+          locale: locale,
         );
       case TargetPlatform.windows:
         return fluent.FluentApp.router(
@@ -108,6 +109,21 @@ class PlatformApp extends ConsumerWidget {
       case ThemeMode.system:
       default:
         return ThemeMode.system;
+    }
+  }
+
+  CupertinoThemeData _getCupertinoTheme(AsyncValue<ThemeMode> themeModeAsync) {
+    final value = themeModeAsync.value;
+    switch (value) {
+      case ThemeMode.light:
+        return AppCupertinoTheme.light();
+      case ThemeMode.dark:
+        return AppCupertinoTheme.dark();
+      case ThemeMode.system:
+      default:
+        // For system mode, we'll use a dynamic theme that adapts to system brightness
+        // CupertinoApp will automatically handle system brightness changes
+        return AppCupertinoTheme.light(); // Base theme, system will override for dark mode
     }
   }
 }

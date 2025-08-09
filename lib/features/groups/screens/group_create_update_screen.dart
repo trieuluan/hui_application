@@ -362,6 +362,7 @@ class _GroupCreateUpdateScreenState
         ),
       ),
       bottomNavigationBar: SafeArea(
+        bottom: false,
         child: Padding(
           padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
           child: SizedBox(

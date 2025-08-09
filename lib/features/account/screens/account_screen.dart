@@ -506,7 +506,7 @@ class AccountScreen extends ConsumerWidget {
           child: ElevatedButton.icon(
             onPressed: () {
               ref.read(authNotifierProvider.notifier).logout();
-              context.go('/login');
+              context.go('/auth');
             },
             icon: const Icon(Icons.logout),
             label: Text(S.of(context)!.logout),

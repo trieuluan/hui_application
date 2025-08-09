@@ -38,12 +38,19 @@ class AppTextField extends StatefulWidget {
 
 class _AppTextFieldState extends State<AppTextField> {
   bool _showError = false; // Biến trạng thái để kiểm soát hiển thị lỗi
+  TextEditingController? _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = widget.controller ?? TextEditingController();
+  }
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       focusNode: widget.focusNode,
-      controller: widget.controller,
+      controller: _controller,
       keyboardType: widget.keyboardType,
       obscureText: widget.obscureText,
       validator: widget.validator,
@@ -57,7 +64,7 @@ class _AppTextFieldState extends State<AppTextField> {
         suffixIcon: widget.suffixIcon,
         contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         errorText:
-            _showError ? widget.validator?.call(widget.controller!.text) : null,
+            _showError ? widget.validator?.call(_controller?.text) : null,
       ),
       onChanged: (value) {
         if (!_showError) {

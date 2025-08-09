@@ -83,5 +83,7 @@
     "group_information": "Group Information",
     "fund_details": "Fund Details",
     "privacy_and_automation": "Privacy & Automation",
-    "save": "Save"
+    "save": "Save",
+    "welcome_to_hui_fund": "Welcome to Hui Fund",
+    "enter_phone_number_to_continue": "Enter phone number to continue"
 }

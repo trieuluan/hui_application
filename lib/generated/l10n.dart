@@ -693,6 +693,26 @@ class S {
   String get save {
     return Intl.message('Save', name: 'save', desc: '', args: []);
   }
+
+  /// `Welcome to Hui Fund`
+  String get welcome_to_hui_fund {
+    return Intl.message(
+      'Welcome to Hui Fund',
+      name: 'welcome_to_hui_fund',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter phone number to continue`
+  String get enter_phone_number_to_continue {
+    return Intl.message(
+      'Enter phone number to continue',
+      name: 'enter_phone_number_to_continue',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

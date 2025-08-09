@@ -1,71 +1,14 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:hui_application/gen/assets.gen.dart';
 
 class AppLogo extends StatelessWidget {
-  final double size;
-  final Color? color;
-  final bool showText;
-
-  const AppLogo({super.key, this.size = 100, this.color, this.showText = true});
+  const AppLogo({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final logoColor = color ?? theme.colorScheme.primaryContainer;
-
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        // Logo Icon
-        Container(
-          width: size,
-          height: size,
-          decoration: BoxDecoration(
-            color: theme.colorScheme.surface,
-            borderRadius: BorderRadius.circular(size * 0.2),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withValues(alpha: 0.08),
-                blurRadius: 16,
-                offset: const Offset(0, 4),
-              ),
-            ],
-            border: Border.all(
-              color: theme.colorScheme.outline.withValues(alpha: 0.15),
-              width: 1.2,
-            ),
-          ),
-          child: Padding(
-            padding: EdgeInsets.all(size * 0.13),
-            child: Image.asset(Assets.logoHui.path, fit: BoxFit.contain),
-          ),
-        ),
-
-        if (showText) ...[
-          const SizedBox(height: 16),
-          // App Name
-          Text(
-            'Hui Fund',
-            style: TextStyle(
-              fontSize: size * 0.3,
-              fontWeight: FontWeight.bold,
-              color: logoColor,
-              letterSpacing: 1.2,
-            ),
-          ),
-          const SizedBox(height: 4),
-          // Tagline
-          Text(
-            'Smart Group Savings',
-            style: TextStyle(
-              fontSize: size * 0.15,
-              color: theme.colorScheme.onSurfaceVariant,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-        ],
-      ],
-    );
+    return Assets.logoHui.image(width: 120, height: 120);
   }
 }
 
@@ -136,15 +79,8 @@ class _AnimatedAppLogoState extends State<AnimatedAppLogo>
         return Transform.scale(
           scale: _scaleAnimation.value,
           child: Transform.rotate(
-            angle: _rotateAnimation.value * 0.1,
-            child: Opacity(
-              opacity: _fadeAnimation.value,
-              child: AppLogo(
-                size: widget.size,
-                color: widget.color,
-                showText: widget.showText,
-              ),
-            ),
+            angle: _rotateAnimation.value * 2 * pi,
+            child: Opacity(opacity: _fadeAnimation.value, child: AppLogo()),
           ),
         );
       },

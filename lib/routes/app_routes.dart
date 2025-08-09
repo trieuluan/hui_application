@@ -4,11 +4,9 @@ import 'package:hui_application/core/guards/auth_guard.dart';
 import 'package:hui_application/core/navigator_keys.dart';
 import 'package:hui_application/features/account/screens/account_screen.dart';
 import 'package:hui_application/features/account/screens/settings_screen.dart';
-import 'package:hui_application/features/auth/screens/login_screen.dart';
-import 'package:hui_application/features/auth/screens/otp_code_screen.dart';
-import 'package:hui_application/features/auth/screens/password_input_screen.dart';
-import 'package:hui_application/features/auth/screens/register_screen.dart';
+import 'package:hui_application/features/auth/screens/unified_auth_screen.dart';
 import 'package:hui_application/features/groups/screens/group_create_update_screen.dart';
+import 'package:hui_application/features/discovery/screens/discovery_screen.dart';
 import 'package:hui_application/features/groups/screens/group_list_screen.dart';
 import 'package:hui_application/features/groups/screens/group_screen.dart';
 import 'package:hui_application/features/home/home_screen.dart';
@@ -20,7 +18,7 @@ import 'package:animations/animations.dart';
 final allowedUnauthenticatedRoutes = {
   '/',
   '/intro',
-  '/login',
+  '/auth',
   '/register',
   '/otp-register',
   '/otp-login',
@@ -43,11 +41,11 @@ final routerProvider = Provider<GoRouter>((ref) {
         return false;
       });
       if (requireAuth(ref) && isAllowed) {
-        return '/home';
+        return '/discovery';
       }
       if (guestOnly(ref) && !isAllowed) {
-        if (state.matchedLocation != '/login') {
-          return '/login'; // Chỉ redirect nếu không phải đang ở /login
+        if (state.matchedLocation != '/auth') {
+          return '/auth'; // Chỉ redirect nếu không phải đang ở /auth
         }
       }
       return null;
@@ -55,37 +53,9 @@ final routerProvider = Provider<GoRouter>((ref) {
     routes: [
       GoRoute(path: '/', builder: (context, state) => const SplashScreen()),
       GoRoute(path: '/intro', builder: (context, state) => const IntroScreen()),
-      GoRoute(path: '/login', builder: (context, state) => const LoginScreen()),
       GoRoute(
-        path: '/password/:emailOrPhone',
-        builder: (context, state) {
-          final emailOrPhone = state.pathParameters['emailOrPhone'] ?? '';
-          return PasswordInputScreen(emailOrPhone: emailOrPhone);
-        },
-      ),
-      GoRoute(
-        path: '/register',
-        builder: (context, state) {
-          final emailOrPhone = state.uri.queryParameters['emailOrPhone'];
-          return RegisterScreen(emailOrPhone: '+${emailOrPhone?.trim() ?? ''}');
-        },
-      ),
-      GoRoute(
-        path: '/otp-login',
-        builder: (context, state) {
-          final emailOrPhone = state.uri.queryParameters['emailOrPhone'] ?? '';
-          return OtpCodeScreen(emailOrPhone: '+${emailOrPhone.trim()}');
-        },
-      ),
-      GoRoute(
-        path: '/otp-register',
-        builder: (context, state) {
-          final emailOrPhone = state.uri.queryParameters['emailOrPhone'] ?? '';
-          return OtpCodeScreen(
-            emailOrPhone: '+${emailOrPhone.trim()}',
-            mode: OtpScreenMode.registerOtp,
-          );
-        },
+        path: '/auth',
+        builder: (context, state) => const UnifiedAuthScreen(),
       ),
       StatefulShellRoute(
         builder: (context, state, navigationShell) {
@@ -105,7 +75,6 @@ final routerProvider = Provider<GoRouter>((ref) {
             ),
         parentNavigatorKey: rootNavigatorKey,
         branches: [
-          // Home Shell
           StatefulShellBranch(
             navigatorKey: homeNavigatorKey,
             routes: [
@@ -113,7 +82,7 @@ final routerProvider = Provider<GoRouter>((ref) {
                 path: '/home',
                 pageBuilder:
                     (context, state) =>
-                        const NoTransitionPage(child: HomeScreen()),
+                        const NoTransitionPage(child: DiscoveryScreen()),
               ),
             ],
           ),
@@ -139,6 +108,17 @@ final routerProvider = Provider<GoRouter>((ref) {
                     },
                   ),
                 ],
+              ),
+            ],
+          ),
+          StatefulShellBranch(
+            navigatorKey: discoveryNavigatorKey,
+            routes: [
+              GoRoute(
+                path: '/discovery',
+                pageBuilder:
+                    (context, state) =>
+                        const NoTransitionPage(child: HomeScreen()),
               ),
             ],
           ),

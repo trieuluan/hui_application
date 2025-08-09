@@ -74,6 +74,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "enter_password": MessageLookupByLibrary.simpleMessage(
       "Enter your Password",
     ),
+    "enter_phone_number_to_continue": MessageLookupByLibrary.simpleMessage(
+      "Enter phone number to continue",
+    ),
     "error": MessageLookupByLibrary.simpleMessage("Error"),
     "fund_details": MessageLookupByLibrary.simpleMessage("Fund Details"),
     "get_start": MessageLookupByLibrary.simpleMessage(
@@ -173,6 +176,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "vietnamese": MessageLookupByLibrary.simpleMessage("Vietnamese"),
     "week": MessageLookupByLibrary.simpleMessage("Week"),
+    "welcome_to_hui_fund": MessageLookupByLibrary.simpleMessage(
+      "Welcome to Hui Fund",
+    ),
     "year": MessageLookupByLibrary.simpleMessage("Year"),
   };
 }

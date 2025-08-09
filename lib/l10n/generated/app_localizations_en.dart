@@ -266,4 +266,10 @@ class SEn extends S {
 
   @override
   String get save => 'Save';
+
+  @override
+  String get welcome_to_hui_fund => 'Welcome to Hui Fund';
+
+  @override
+  String get enter_phone_number_to_continue => 'Enter phone number to continue';
 }

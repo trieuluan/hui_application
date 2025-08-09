@@ -1,15 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_libphonenumber/flutter_libphonenumber.dart';
-import 'package:hui_application/core/validators/validators.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
-import 'package:intl_phone_field/phone_number.dart';
 import 'package:reactive_forms/reactive_forms.dart';
+
+// Model để chứa data từ parse function
+class ParsedPhoneData {
+  final String e164;
+  final String nationalNumber;
+  final String countryCode;
+  final String regionCode;
+  final String completeNumber;
+  final String number;
+
+  ParsedPhoneData({
+    required this.e164,
+    required this.nationalNumber,
+    required this.countryCode,
+    required this.regionCode,
+    required this.completeNumber,
+    required this.number,
+  });
+
+  @override
+  String toString() {
+    return 'ParsedPhoneData(e164: $e164, nationalNumber: $nationalNumber, countryCode: $countryCode, regionCode: $regionCode, completeNumber: $completeNumber, number: $number)';
+  }
+}
 
 class ReactiveIntlPhoneField extends StatefulWidget {
   final String formControlName;
   final String labelText;
   final String initialCountryCode;
-  final TextEditingController? controller;
   final Map<String, String Function(Object)>? validationMessages;
 
   const ReactiveIntlPhoneField({
@@ -18,7 +39,6 @@ class ReactiveIntlPhoneField extends StatefulWidget {
     required this.labelText,
     this.initialCountryCode = 'VN',
     this.validationMessages,
-    this.controller,
   });
 
   @override
@@ -26,50 +46,22 @@ class ReactiveIntlPhoneField extends StatefulWidget {
 }
 
 class ReactiveIntlPhoneFieldState extends State<ReactiveIntlPhoneField> {
-  PhoneNumber? phoneNumber;
-
-  @override
-  void initState() {
-    super.initState();
-
-    widget.controller?.addListener(() {
-      setState(() {
-        phoneNumber!.number = widget.controller?.text.trim() ?? '';
-      });
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    return ReactiveFormField<String, String>(
+    return ReactiveFormField<ParsedPhoneData, ParsedPhoneData>(
       formControlName: widget.formControlName,
       validationMessages: widget.validationMessages,
       showErrors: (control) => control.invalid && control.touched,
       builder: (field) {
         final control = field.control;
-        control.value = widget.controller?.text;
-        if (control.asyncValidators.isEmpty) {
-          final defaultCountry = CountryManager().countries.firstWhere(
-            (country) => country.countryCode == 'VN',
-            orElse: () => CountryManager().countries.first,
-          );
-          phoneNumber = PhoneNumber(
-            number: '',
-            countryCode: '+${defaultCountry.phoneCode}',
-            countryISOCode: defaultCountry.countryCode,
-          );
-          control.setAsyncValidators([
-            DelegateAsyncValidator(makePhoneValidator(phone: phoneNumber)),
-          ], autoValidate: true);
-        }
+
         return IntlPhoneField(
+          initialValue: control.value?.completeNumber,
           disableLengthCheck: true,
-          controller: widget.controller,
           enabled: !control.disabled,
           autovalidateMode: AutovalidateMode.onUserInteraction,
           decoration: InputDecoration(
             labelText: widget.labelText,
-            border: const OutlineInputBorder(),
             contentPadding: const EdgeInsets.symmetric(
               horizontal: 12,
               vertical: 8,
@@ -81,9 +73,33 @@ class ReactiveIntlPhoneFieldState extends State<ReactiveIntlPhoneField> {
             errorText: _getErrorText(control),
           ),
           initialCountryCode: widget.initialCountryCode,
-          onChanged: (phone) {
+          onChanged: (phone) async {
             // Handle phone number change
-            field.didChange(phone.completeNumber);
+            try {
+              final parsed = await parse(phone.completeNumber);
+              field.didChange(
+                ParsedPhoneData(
+                  e164: parsed['e164'],
+                  nationalNumber: parsed['national_number'],
+                  countryCode: parsed['country_code'],
+                  regionCode: parsed['region_code'],
+                  completeNumber: phone.completeNumber,
+                  number: phone.number,
+                ),
+              );
+              // control.updateValueAndValidity();
+            } catch (e) {
+              field.didChange(
+                ParsedPhoneData(
+                  e164: '',
+                  nationalNumber: '',
+                  countryCode: '',
+                  regionCode: '',
+                  completeNumber: phone.completeNumber,
+                  number: phone.number,
+                ),
+              );
+            }
             control.markAsTouched();
             control.updateValueAndValidity();
           },
@@ -95,10 +111,9 @@ class ReactiveIntlPhoneFieldState extends State<ReactiveIntlPhoneField> {
   String? _getErrorText(AbstractControl? control) {
     if (control!.invalid && control.touched) {
       for (final errorKey in control.errors.keys) {
-        final getMessage = widget.validationMessages?[errorKey];
-        if (getMessage != null) {
-          return getMessage(control.errors[errorKey]!);
-        }
+        return widget.validationMessages?[errorKey] != null
+            ? widget.validationMessages![errorKey]!(errorKey)
+            : control.errors[errorKey] as String?;
       }
       return 'Invalid phone number';
     }
